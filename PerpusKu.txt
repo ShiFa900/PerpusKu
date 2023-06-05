@@ -1,0 +1,6 @@
+PerpusKu
+
+1. sempurnakan function add dan edit
+2. buat function pencarian baru untuk penulis, sama dengan function pencarian pada menu "Cari"
+tapi tidak dengan inputan yang sama
+3. penambahan data baru (penulis) kemudian melakukan pencarian
