@@ -4,50 +4,91 @@ require_once __DIR__ . "/../../Utils.php";
 
 function bookReturn(array $rents, array $books, array $author, array $genre)
 {
-    while (true) {
-        if (isEmpty($rents) == 0) {
-            echo "Kamu belum meminjam buku apapun :(";
-            break;
+    // while (true) {
+    if (isEmpty($rents) == 0) {
+        echo "Kamu belum meminjam buku apapun :(";
+        // break;
+    } else {
+        echo "PENGEMBALIAN" . PHP_EOL;
+
+        // lakukan pencarian untuk judul buku yang akan di tutup proses transaksinya
+        echo "======" . PHP_EOL;
+
+        // watchout, $result isinya adalah array of 4 data
+        $result = searchBookToBeReturned($rents, $books, $author, $genre);
+
+        // showTenant($temp);
+        echo "======" . PHP_EOL;
+
+        // TODO: tampilkan
+        for ($i = 0; $i < count($result); $i++) {
+            $theRent = $result[$i][0];
+            $theBook = $result[$i][1];
+            $theBookAuthor = $result[$i][2];
+            $theBookGenre = $result[$i][3];
+
+            // show...
+        }
+
+        $target = getIndex($result, "Pilih transaksi sewa buku yang akan ditutup: ");
+
+        if (confirm("Lanjutkan proses pengembalian (y/n)? ") == false) {
+            echo "Penutupan sewa buku dibatalkan";
         } else {
-            echo "PENGEMBALIAN" . PHP_EOL;
-
-
-            // TODO: Seharusnya yang dicari adalah judul-judul buku yang ada di $rents db..
-
-            // lakukan pencarian untuk judul buku yang akan di tutup proses transaksinya
-            echo "======" . PHP_EOL;
-            $search = searchForBookAndTenant($rents, $books, $author, $genre);
-            // tampilkan juga penyewa buku, $rent["bookId"] => $search["id"];
-            $temp = [];
-            for ($i = 0; $i < count($search); $i++) {
-                if ($rents[$i]["bookId"] ==  $search[$i]["id"]) {
-                    $temp[] = $rents[$i];
+            $theRentData = $result[$target - 1][0];
+            for ($i = 0; $i < count($rents); $i++) {
+                if ($theRentData["id"] == $rents[$i]["id"]) {
+                    $rents[$i]["isReturned"] = true;
+                    $rents[$i]["returnedOn"] = time();
+                    echo "Data sewa buku telah ditutup!" . PHP_EOL;
+                    break;
                 }
-            }
-            // showTenant($temp);
-            echo "======" . PHP_EOL;
-            
-            $target = getIndex($search, "Pilih transaksi sewa buku yang akan ditutup: ");
-            if (confirm("Lanjutkan proses pengembalian (y/n)? ") == false) {
-                echo "Penutupan sewa buku dibatalkan";
-                break;
-            } else {
-                $id = $temp[$target - 1]["id"];
-                for ($i = 0; $i < count($rents); $i++) {
-                    if ($id == $rents[$i]["id"]) {
-                        $rents[$i]["isReturned"] = true;
-                        $rents[$i]["returnedOn"] = time();
-                    }
-                }
-            }
-
-            echo "Data sewa buku telah ditutup!" . PHP_EOL;
-            if (confirm("Apakah kamu ingin melanjutkan penutupan transaksi (y/n)? ")) {
-                bookReturn($rents, $books, $author, $genre);
             }
         }
+
         return $rents;
     }
+}
+
+function searchBookToBeReturned(array $rents, array $books, $authors, $genres)
+{
+    while (true) {
+        if (isEmpty($rents) == 0) {
+            echo "Data peminjaman kosong :(";
+            break;
+        } else {
+            echo "Pencarian judul buku: ";
+            $title = getStringInput();
+            $bookWithTitles = getBooksByTitle($books, $title);
+
+            if (count($bookWithTitles) == 0) {
+                echo "Maaf, tidak ada buku dengan judul tsb." . PHP_EOL;
+                break;
+            } else {
+                $temp = [];
+
+                for ($i = 0; $i < count($rents); $i++) {
+                    for ($j = 0; $j < count($bookWithTitles); $j++) {
+                        if ($rents[$i]["bookId"] == $bookWithTitles[$j]["id"] && $rents[$i]["isReturned"] == false) {
+                            $temp[] = [
+                                // data rent:
+                                0 => $rents[$i],
+                                // data si buku:
+                                1 => $bookWithTitles[$j],
+                                // penulis si buku:
+                                2 => getFirstDataFromArray($authors, $bookWithTitles[$j]["authorId"], "id"),
+                                // genre si buku:
+                                3 => getFirstDataFromArray($genres, $bookWithTitles[$j]["genreId"], "id")
+                            ];
+                        }
+                    }
+                }
+
+                return $temp;
+            }
+        }
+    }
+    return null;
 }
 
 function searchForBookAndTenant(array $rent, array $books, array $author, array $genre)

@@ -17,28 +17,23 @@ function deleteGenre(array $genre, array $books)
             $idGenreToBeDeleted = $search[$indexOfGenre - 1]["id"];
             for ($i = 0; $i < count($genre); $i++) {
                 if ($idGenreToBeDeleted == $genre[$i]["id"]) {
+                    // dapatkan setidaknya satu buku yang memiliki genre ini
+                    $bookWithGenre = getFirstDataFromArray($books, $idGenreToBeDeleted, "genreId");
 
-                    $bookGenre = genreBooksId($books, $idGenreToBeDeleted);
-                    if ($bookGenre == false) {
-                        echo "Genre tidak bisa dihapus, karena dimuat di dalam buku yang sudah terpublikasi" . PHP_EOL;
+                    if ($bookWithGenre != null) {
+                        echo "Genre tidak bisa dihapus, karena terdapat buku yang memiliki genre ini." . PHP_EOL;
                     } else {
-                        // TODO: why do we have another for loop again here?
-                        for ($i = 0; $i < count($genre); $i++) {
-                            $genreName = "";
-                            if ($idGenreToBeDeleted == $genre[$i]["id"]) {
-                                $genreName = $genre[$i]["genre"];
+                        $genreName = $genre[$i]["genre"];
+                        $sentence = "Hapus genre \"$genreName\" (y/n)? ";
 
-                                $sentence = "Hapus genre \"$genreName\" (y/n)? ";
-                                if (confirm($sentence)) {
-                                    unset($genre[$i]);
-                                    echo "Genre " . '"' . ucwords($genreName) . '"' . " telah dihapus" . PHP_EOL;
-                                    $genre = array_values($genre);
-                                } else {
-                                    echo "Pengahapusan dibatalkan" . PHP_EOL;
-                                    break;
-                                }
-                            }
+                        if (confirm($sentence)) {
+                            unset($genre[$i]);
+                            echo "Genre " . '"' . ucwords($genreName) . '"' . " telah dihapus" . PHP_EOL;
+                            $genre = array_values($genre);
+                        } else {
+                            echo "Pengahapusan dibatalkan" . PHP_EOL;
                         }
+                        break;
                     }
                 }
             }

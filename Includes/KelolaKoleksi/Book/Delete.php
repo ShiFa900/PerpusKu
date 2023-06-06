@@ -20,24 +20,24 @@ function deleteBook(array $books, array $author, array $genre, array $rent)
 
                 // cek apakah buku yang akan dihapus id nya ada di menu penyewaan
                 for ($i = 0; $i < count($books); $i++) {
-                    if ($idBookToBeDeleted == $rent[$i]["bookId"]) {
-                        echo "Tidak bisa menghapus, karena data buku masih tersimpan di database penyewaan" . PHP_EOL;
-                    } else {
-                        // TODO: why do we have another for loop again here?
-                        for ($i = 0; $i < count($books); $i++) {
-                            if ($idBookToBeDeleted == $books[$i]["id"]) {
-                                $bookTitle = $books[$i]["title"];
-                                echoBook($books[$i], $genre, $author);
+                    if ($idBookToBeDeleted == $books[$i]["id"]) {
+                        // get if the book if on the rents db
+                        $rentedBook = getFirstDataFromArray($rent, $idBookToBeDeleted, "bookId");
 
-                                if (confirm("Hapus data buku ini (y/n)? ") == true) {
-                                    unset($books[$i]);
-                                    echo "Buku dengan judul " . '"' . ucwords($bookTitle) . '"' . " sudah dihapus" . PHP_EOL;
-                                    $books = array_values($books);
-                                } else {
-                                    echo "Penghapusan dibatalkan" . PHP_EOL;
-                                    break;
-                                }
+                        if ($rentedBook != null) {
+                            echo "Tidak bisa menghapus, karena buku masih disewakan" . PHP_EOL;
+                        } else {
+                            $bookTitle = $books[$i]["title"];
+                            echoBook($books[$i], $genre, $author);
+
+                            if (confirm("Hapus data buku ini (y/n)? ") == true) {
+                                unset($books[$i]);
+                                echo "Buku dengan judul " . '"' . ucwords($bookTitle) . '"' . " sudah dihapus" . PHP_EOL;
+                                $books = array_values($books);
+                            } else {
+                                echo "Penghapusan dibatalkan" . PHP_EOL;
                             }
+                            break;
                         }
                     }
                 }

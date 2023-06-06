@@ -150,10 +150,10 @@ function isNikOnRent(array $rent, string $nik): bool
 {
     for ($i = 0; $i < count($rent); $i++) {
         if ($nik == $rent[$i]["nik"]) {
-            return false;
+            return true;
         }
     }
-    return true;
+    return false;
 }
 
 function askForNewBook()
@@ -209,49 +209,49 @@ function askForNewBook()
     }
 }
 
-function askForRent(array $rent, int $bookId)
+function askForRent(array $rent, array $book)
 {
-
     while (true) {
-
         $id = getId($rent);
         $nik = askForNik();
-        $adaNik = isNikOnRent($rent, $nik);
-        if ($adaNik == false) {
-            echo "Maaf, kamu sedang meminjam buku yang belum dikembalikan :(" . PHP_EOL;
-            break;
-        } else {
-            $name = askForName();
-            $duration = askForRentalDuration();
 
-            // TODO: nominal standard diambil dari attribute "rentalFee" pada item ybs di $books
-            $rent = rentalPrice("Biaya sewa (standarnya Rp.5000): ");
-            $currentTime = time();
-            
-            // TODO: wrong formula! 
-            // $duration is in days BUT $shouldReturnedOn and $currentTime is in timestamp (seconds)
-            // 1 day = 24*60*60 seconds
-            $shouldReturnedOn = date(date("j") + $duration) .  date(" F Y");
+        if (isNikOnRent($rent, $nik) == false) {
+            echo "Maaf, kamu sedang meminjam buku yang belum dikembalikan :(" . PHP_EOL;
+            return null;
         }
+
+        $name = askForName();
+
+        // duration in days
+        $duration = askForRentalDuration();
+
+        // nominal standard diambil dari attribute "rentalFee" pada item ybs di $books
+        $defaultRentalFee = number_format($book["rentalFee"]);
+        $rent = rentalPrice("Biaya sewa (standarnya Rp $defaultRentalFee): ");
+
+        // timestamp untuk kapan si buku dikembalikan
+        // 1 day = 24*60*60 seconds
+        $currentTime = time();
+        $shouldReturnedOn = $currentTime + ($duration * 24 * 60 * 60);
+        // $shouldReturnedOn = date(date("j") + () ) .  date(" F Y");
 
         return [
             "id" => $id,
-            "bookId" => $bookId,
-            "nama" => $name,
+            "bookId" => $book["id"],
+            "name" => $name,
             "nik" => $nik,
             "duration" => $duration,
-            // TODO: should be `amount`, not `rentalFee`
-            "rentalFee" => $rent,
+            "amount" => $rent,
             "rentedOn" => $currentTime,
             "shouldReturnedOn" => $shouldReturnedOn,
             // otomatis akan ter-assign jika buku telah dikembalikan (true)
             "isReturned" => false,
             // otomatis akan terisi dengan tanggal dimana penyewa mengembalikan buku (jika buku sudah dikembalikan)
             "returnedOn" => null,
-
         ];
     }
 }
+
 function askForOrdinalNumber(string $input)
 {
     while (true) {
@@ -313,20 +313,14 @@ function isBookExist(array $books, string $title)
     }
     return null;
 }
-function authorBooksId(array $input, string $id)
-{
-    for ($i = 0; $i < count($input); $i++) {
-        if ($id == $input[$i]["authorId"]) {
-            return $input[$i];
-        }
-    }
-    return null;
-}
 
-function genreBooksId(array $input, string $id)
+/**
+ * Helper function untuk mendapatkan elemen pada array $input, dengan $keyname yang bernilai $id
+ */
+function getFirstDataFromArray(array $input, int $id, string $keyName): array
 {
     for ($i = 0; $i < count($input); $i++) {
-        if ($id == $input[$i]["genreId"]) {
+        if ($id == $input[$i][$keyName]) {
             return $input[$i];
         }
     }
@@ -529,9 +523,26 @@ function isEmpty(array $input)
     return true;
 }
 
+/**
+ * Mencari dan mengembalikan buku-buku dalam array $books yang memiliki judul serupa $title
+ */
+function getBooksByTitle(array $books, string $title): array
+{
+    $temp = [];
+
+    for ($i = 0; $i < count($books); $i++) {
+        if (preg_match("/$title/i", $books[$i]["title"])) {
+            if (in_array($books[$i]["title"], $temp) == false) {
+                $temp[] = $books[$i];
+            }
+        }
+    }
+
+    return $temp;
+}
+
 function searchBook(array $books, array $author, array $genre, string $input)
 {
-
     while (true) {
         if (count($books) == 0) {
             echo "Kamu belum menambahkan data buku :(";
@@ -539,15 +550,7 @@ function searchBook(array $books, array $author, array $genre, string $input)
         } else {
             echo "Pencarian judul buku: ";
             $title = getStringInput();
-            $temp = [];
-
-            for ($i = 0; $i < count($books); $i++) {
-                if (preg_match("/$title/i", $books[$i]["title"])) {
-                    if (in_array($books[$i]["title"], $temp) == false) {
-                        $temp[] = $books[$i];
-                    }
-                }
-            }
+            $temp = getBooksByTitle($books, $title);
 
             if (count($temp) == 0) {
                 echo "Maaf, tidak ada buku dengan menggunakan kata kunci tsb." . PHP_EOL;

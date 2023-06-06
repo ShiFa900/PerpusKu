@@ -16,28 +16,24 @@ function deleteAuthor(array $author, array $books)
 
             for ($i = 0; $i < count($author); $i++) {
                 if ($idAuthorToBeDeleted == $author[$i]["id"]) {
+                    // dapatkan setidaknya satu book yg dipublikasikan oleh $author[$i]
+                    $authorBooks = getFirstDataFromArray($books, $idAuthorToBeDeleted, "authorId");
 
-                    $bookAuthor = authorBooksId($books, $idAuthorToBeDeleted);
-                    if ($bookAuthor != null) {
+                    // jika si penulis blm pernah mempublikasikan buku maka:
+                    if ($authorBooks != null) {
                         echo "Penulis tidak bisa dihapus, karena sudah memiliki data buku yang terpublikasikan" . PHP_EOL;
                     } else {
-                        // TODO: why do we have another for loop again here?
-                        for ($i = 0; $i < count($author); $i++) {
-                            $nama = "";
-                            if ($idAuthorToBeDeleted == $author[$i]["id"]) {
-                                $nama = $author[$i]["name"];
+                        $nama = $author[$i]["name"];
+                        $sentence = "Hapus penulis \"$nama\" (y/n)? ";
 
-                                $sentence = "Hapus penulis \"$nama\" (y/n)? ";
-                                if (confirm($sentence) == true) {
-                                    unset($author[$i]);
-                                    echo "Penulis " . '"' . ucwords($nama) . '"' . " telah dihapus" . PHP_EOL;
-                                    $author = array_values($author);
-                                } else {
-                                    echo "Penghapusan dibatalkan" . PHP_EOL;
-                                    break;
-                                }
-                            }
+                        if (confirm($sentence) == true) {
+                            unset($author[$i]);
+                            echo "Penulis " . '"' . ucwords($nama) . '"' . " telah dihapus" . PHP_EOL;
+                            $author = array_values($author);
+                        } else {
+                            echo "Penghapusan dibatalkan" . PHP_EOL;
                         }
+                        break;
                     }
                 }
             }

@@ -264,6 +264,8 @@ function mainBookBorrowingMenu()
             }
         } elseif ($menu == 3) {
             // daftar pengembalian buku
+            // TODO: while (true) disini untuk mempermudah pengembalian buku berikutnya
+
             $rents = bookReturn($rents, $books, $authors, $genres);
         } elseif ($menu == 0) {
             echo "Pilih nomor yang tersedia" . PHP_EOL;

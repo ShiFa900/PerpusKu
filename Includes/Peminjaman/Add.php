@@ -19,7 +19,7 @@ function addRent(array $rent, array $books, array $authors, array $genres)
                 echo "TAMBAH PEMINJAMAN" . PHP_EOL;
 
                 for ($i = 0; $i < count($search); $i++) {
-                    $newRent = askForRent($rent, $search[$i]["id"]);
+                    $newRent = askForRent($rent, $search[$i]);
                     if ($newRent == null) {
                         return null;
                     } else {
