@@ -211,10 +211,10 @@ function askForNewBook()
 
 function askForRent(array $rent, int $bookId)
 {
-    global $books;
 
     while (true) {
 
+        $id = getId($rent);
         $nik = askForNik();
         $adaNik = isNikOnRent($rent, $nik);
         if ($adaNik == false) {
@@ -224,9 +224,8 @@ function askForRent(array $rent, int $bookId)
             $name = askForName();
             $duration = askForRentalDuration();
             $rent = rentalPrice("Biaya sewa (standarnya Rp.5000): ");
-            $id = getId($books);
             $currentTime = time();
-            $shouldReturnedOn = $currentTime + $duration;
+            $shouldReturnedOn = date(date("j") + $duration) .  date(" F Y");
         }
 
         return [
@@ -281,7 +280,7 @@ function getAuthorsName(array $authors, string $name): array
 function isAuthorExist(array $authors, string $name): bool
 {
     for ($i = 0; $i < count($authors); $i++) {
-        if (ucwords($name) == $authors[$i]["name"]) {
+        if (strtolower($name) == strtolower($authors[$i]["name"])) {
             return true;
         }
     }
@@ -291,7 +290,7 @@ function isAuthorExist(array $authors, string $name): bool
 function isGenreExist(array $genres, string $input): bool
 {
     for ($i = 0; $i < count($genres); $i++) {
-        if (ucwords($input) == $genres[$i]["genre"]) {
+        if (strtolower($input) == strtolower($genres[$i]["genre"])) {
             return true;
         }
     }
@@ -440,6 +439,18 @@ function showTenant(array $rent)
     }
 }
 
+function showLoanList(array $rents, array $books)
+{
+    if (isEmpty($rents) == false) {
+        echo "Maaf, data penyewaan kosong" . PHP_EOL;
+    } else {
+        for ($i = 0; $i < count($rents); $i++) {
+            if ($rents[$i]["isReturned"] == false) {
+                $over = $rents[$i]["rentedOn"] + date($rents[$i]["duration"]);
+            }
+        }
+    }
+}
 function echoBook(array $showNewBook, array $genres, array $authors)
 {
     echo "======" . PHP_EOL;
@@ -509,4 +520,108 @@ function isEmpty(array $input)
         return false;
     }
     return true;
+}
+
+function searchBook(array $books, array $author, array $genre, string $input)
+{
+
+    while (true) {
+        if (count($books) == 0) {
+            echo "Kamu belum menambahkan data buku :(";
+            break;
+        } else {
+            echo "Pencarian judul buku: ";
+            $title = getStringInput();
+            $temp = [];
+
+            for ($i = 0; $i < count($books); $i++) {
+                if (preg_match("/$title/i", $books[$i]["title"])) {
+                    if (in_array($books[$i]["title"], $temp) == false) {
+                        $temp[] = $books[$i];
+                    }
+                }
+            }
+
+            if (count($temp) == 0) {
+                echo "Maaf, tidak ada buku dengan menggunakan kata kunci tsb." . PHP_EOL;
+                return null;
+            } else {
+                echo "Hasil pencarian: " . PHP_EOL;
+                echo "$input\n";
+                for ($i = 0; $i < count($temp); $i++) {
+                    echo "\n $i" + 1 . ". " . showBook(books: $temp[$i], author: $author, genre: $genre);
+                }
+            }
+        }
+        return $temp;
+    }
+}
+
+function searchGenres(array $genres)
+{
+    while (true) {
+        if (count($genres) == 0) {
+            echo "Kamu belum menambahkan data genre :(";
+            break;
+        } else {
+            echo "Pencarian nama genre: ";
+            $genreName = getStringInput();
+            $temp = [];
+
+            for ($i = 0; $i < count($genres); $i++) {
+                if (preg_match("/$genreName/i", $genres[$i]["genre"])) {
+                    if (in_array($genres[$i]["genre"], $temp) == false) {
+                        $temp[] = $genres[$i];
+                    }
+                }
+            }
+            if (count($temp) == 0) {
+                echo "Maaf, tidak ada genre dengan menggunakan kata kunci tsb." . PHP_EOL;
+                return null;
+            } else {
+                echo "Hasil pencarian: " . PHP_EOL;
+                echo "======" . PHP_EOL;
+                for ($i = 0; $i < count($temp); $i++) {
+                    showGenre($temp[$i], $i);
+                }
+            }
+        }
+        return $temp;
+    }
+}
+
+function searchAuthors(array $authors)
+{
+    while (true) {
+        // pencarian dilakukan dengan menggunkana nama dari author atau nama penanya(?)
+        if (count($authors) == 0) {
+            echo "Kamu belum menambahkan data author :(";
+            break;
+        } else {
+            echo "Pencarian nama penulis: ";
+            $authorName = getStringInput();
+            $temp = [];
+
+            for ($i = 0; $i < count($authors); $i++) {
+                if (preg_match("/$authorName/i", $authors[$i]["name"])) {
+                    if (in_array($authors[$i]["name"], $temp) == false) {
+                        $temp[] = $authors[$i];
+                    }
+                }
+            }
+
+            if (count($temp) == 0) {
+                echo "Maaf, tidak ada penulis dengan menggunakan kata kunci tsb." . PHP_EOL;
+                return null;
+            } else {
+                echo "Hasil pencarian: " . PHP_EOL;
+                echo "======" . PHP_EOL;
+                for ($i = 0; $i < count($temp); $i++) {
+                    // saat menampilkan author, tampilkan juga jumlah buku yang ditulisnya
+                    showAuthors($temp[$i], $i);
+                }
+            }
+        }
+        return $temp;
+    }
 }

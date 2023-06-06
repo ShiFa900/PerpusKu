@@ -9,7 +9,7 @@ function deleteBook(array $books, array $author, array $genre, array $rent)
             echo "Tidak bisa mengahapus, karena kamu belum menambahkan data buku :(" . PHP_EOL;
             break;
         } else {
-            $search = searchBook($books, $author, $genre, "");
+            $search = searchBook($books, $author, $genre, "======");
             if ($search == null) {
                 break;
             } else {

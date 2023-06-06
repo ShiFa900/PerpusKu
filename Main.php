@@ -2,15 +2,12 @@
 
 require_once __DIR__ . "\Utils.php";
 require_once "Includes\KelolaKoleksi\Book\Add.php";
-require_once "Includes\KelolaKoleksi\Book\Search.php";
 require_once "Includes\KelolaKoleksi\Book\Delete.php";
-require_once "Includes\KelolaKoleksi\Authors\Search.php";
 require_once "Includes\KelolaKoleksi\Authors\Add.php";
 require_once "Includes\KelolaKoleksi\Authors\Edit.php";
 require_once "Includes\KelolaKoleksi\Authors\Delete.php";
 require_once "Includes\KelolaKoleksi\Genres\Delete.php";
 require_once "Includes\KelolaKoleksi\Genres\Add.php";
-require_once "Includes\KelolaKoleksi\Genres\Search.php";
 require_once "Includes\KelolaKoleksi\Genres\Edit.php";
 require_once "Includes\KelolaKoleksi\Book\Edit.php";
 require_once "includes\Peminjaman\Add.php";
@@ -171,7 +168,7 @@ function mainBookCollectionMenu()
     while ($exit == false) {
         $menu = showBookCollectionMenu();
         if ($menu == 1) {
-            searchBook($books, $authors, $genres, "");
+            searchBook($books, $authors, $genres, "======");
         } elseif ($menu == 2) {
             $temp = addBook($books, $genres, $authors);
             if ($temp != null) {
@@ -261,7 +258,10 @@ function mainBookBorrowingMenu()
             // daftar peminjaman
         } elseif ($menu == 2) {
             // tambah data peminjaman
-            $rents = addRent($books, $authors, $genres, $rents);
+            $temp = addRent($rents, $books, $authors, $genres);
+            if ($temp != null) {
+                $rents = $temp;
+            }
         } elseif ($menu == 3) {
             // daftar pengembalian buku
             $rents = bookReturn($rents, $books, $authors, $genres);

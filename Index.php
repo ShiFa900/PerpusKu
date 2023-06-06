@@ -29,7 +29,7 @@ $books = [
     ),
     array(
         "id" => 4,
-        "title" => "Jiwa Malang #1",
+        "title" => "Hari ini Pun Tak Akan Berubah #1",
         "year" => 2017,
         "authorId" => 38,
         "genreId" => 2,
@@ -52,7 +52,7 @@ $rents = [
     ),
     array(
         "id" => 91,
-        "bookId" => 3,
+        "bookId" => 4,
         "nik" => 332,
         "name" => "Mimi",
         "amount" => 15000,

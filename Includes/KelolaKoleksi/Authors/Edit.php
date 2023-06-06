@@ -1,8 +1,6 @@
 <?php
 
 require_once "Utils.php";
-require_once "Search.php";
-
 
 function editAuthor(array $author)
 {

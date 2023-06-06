@@ -9,7 +9,7 @@ function editBook(array $book, array $author, array $genre)
             echo "Tidak bisa mengedit, karena kamu belum menambahkan data buku :(" . PHP_EOL;
             break;
         } else {
-            $search = searchBook($book, $author, $genre, "");
+            $search = searchBook($book, $author, $genre, "======");
             if ($search == null) {
                 break;
             } else {
