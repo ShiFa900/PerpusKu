@@ -233,7 +233,6 @@ function askForRent(array $rent, array $book)
         // 1 day = 24*60*60 seconds
         $currentTime = time();
         $shouldReturnedOn = $currentTime + ($duration * 24 * 60 * 60);
-        // $shouldReturnedOn = date(date("j") + () ) .  date(" F Y");
 
         return [
             "id" => $id,

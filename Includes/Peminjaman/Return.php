@@ -17,31 +17,39 @@ function bookReturn(array $rents, array $books, array $author, array $genre)
         // watchout, $result isinya adalah array of 4 data
         $result = searchBookToBeReturned($rents, $books, $author, $genre);
 
-        // showTenant($temp);
-        echo "======" . PHP_EOL;
+        if ($result != null) {
+            echo "======" . PHP_EOL;
 
-        // TODO: tampilkan
-        for ($i = 0; $i < count($result); $i++) {
-            $theRent = $result[$i][0];
-            $theBook = $result[$i][1];
-            $theBookAuthor = $result[$i][2];
-            $theBookGenre = $result[$i][3];
+            // TODO: tampilkan
+            for ($i = 0; $i < count($result); $i++) {
+                $theRent = $result[$i][0];
+                $theBook = $result[$i][1];
+                $theBookAuthor = $result[$i][2];
+                $theBookGenre = $result[$i][3];
 
-            // show...
-        }
+                // show...
+                echo "Transaksi sewa: " . PHP_EOL;
+                echo $i + 1 . ". " . $theRent["name"] . " (NIK: " . $theRent["nik"] . ") pada " .
+                    date('j F Y', $theRent["rentedOn"]) . " -> " . date('j F Y', $theRent["shouldReturnedOn"])
+                    . PHP_EOL;
+                echo $theBook["title"] . ", oleh " . $theBookAuthor["name"] . " - " .
+                    $theBook["year"] . " (" . $theBookGenre["genre"] . ")" . PHP_EOL;
+                echo "\n";
+            }
 
-        $target = getIndex($result, "Pilih transaksi sewa buku yang akan ditutup: ");
+            $target = getIndex($result, "Pilih transaksi sewa buku yang akan ditutup: ");
 
-        if (confirm("Lanjutkan proses pengembalian (y/n)? ") == false) {
-            echo "Penutupan sewa buku dibatalkan";
-        } else {
-            $theRentData = $result[$target - 1][0];
-            for ($i = 0; $i < count($rents); $i++) {
-                if ($theRentData["id"] == $rents[$i]["id"]) {
-                    $rents[$i]["isReturned"] = true;
-                    $rents[$i]["returnedOn"] = time();
-                    echo "Data sewa buku telah ditutup!" . PHP_EOL;
-                    break;
+            if (confirm("Lanjutkan proses pengembalian (y/n)? ") == false) {
+                echo "Penutupan sewa buku dibatalkan";
+            } else {
+                $theRentData = $result[$target - 1][0];
+                for ($i = 0; $i < count($rents); $i++) {
+                    if ($theRentData["id"] == $rents[$i]["id"]) {
+                        $rents[$i]["isReturned"] = true;
+                        $rents[$i]["returnedOn"] = time();
+                        echo "Data sewa buku telah ditutup!" . PHP_EOL;
+                        break;
+                    }
                 }
             }
         }
@@ -62,7 +70,7 @@ function searchBookToBeReturned(array $rents, array $books, $authors, $genres)
             $bookWithTitles = getBooksByTitle($books, $title);
 
             if (count($bookWithTitles) == 0) {
-                echo "Maaf, tidak ada buku dengan judul tsb." . PHP_EOL;
+                echo "Maaf, tidak ada buku dengan judul tsb. \n" . PHP_EOL;
                 break;
             } else {
                 $temp = [];
@@ -91,41 +99,41 @@ function searchBookToBeReturned(array $rents, array $books, $authors, $genres)
     return null;
 }
 
-function searchForBookAndTenant(array $rent, array $books, array $author, array $genre)
-{
-    while (true) {
-        if (isEmpty($rent) == 0) {
-            echo "Kamu belum menambahkan data peminjamnan :(";
-            break;
-        } else {
-            echo "Pencarian judul buku: ";
-            $title = getStringInput();
-            $temp = [];
+// function searchForBookAndTenant(array $rent, array $books, array $author, array $genre)
+// {
+//     while (true) {
+//         if (isEmpty($rent) == 0) {
+//             echo "Kamu belum menambahkan data peminjamnan :(";
+//             break;
+//         } else {
+//             echo "Pencarian judul buku: ";
+//             $title = getStringInput();
+//             $temp = [];
 
-            for ($i = 0; $i < count($books); $i++) {
-                if (preg_match("/$title/i", $books[$i]["title"])) {
-                    if (in_array($books[$i]["title"], $temp) == false) {
-                        $temp[] = $books[$i];
-                    }
-                }
-            }
+//             for ($i = 0; $i < count($books); $i++) {
+//                 if (preg_match("/$title/i", $books[$i]["title"])) {
+//                     if (in_array($books[$i]["title"], $temp) == false) {
+//                         $temp[] = $books[$i];
+//                     }
+//                 }
+//             }
 
-            if (count($temp) == 0) {
-                echo "Maaf, tidak ada buku dengan menggunakan kata kunci tsb." . PHP_EOL;
-                return null;
-            } else {
-                echo "Hasil pencarian: " . PHP_EOL;
-                echo "Transaksi sewa: \n";
-                for ($i = 0; $i < count($temp); $i++) {
-                    for ($i = 0; $i < count($rent); $i++) {
-                        if ($rent[$i]["bookId"] == $temp[$i]["id"]) {
-                            echo $i + 1 . ". " . showBook(books: $temp[$i], author: $author, genre: $genre)
-                                . "\n", showTenant($rent) . PHP_EOL;
-                        }
-                    }
-                }
-            }
-        }
-        return $temp;
-    }
-}
+//             if (count($temp) == 0) {
+//                 echo "Maaf, tidak ada buku dengan menggunakan kata kunci tsb." . PHP_EOL;
+//                 return null;
+//             } else {
+//                 echo "Hasil pencarian: " . PHP_EOL;
+//                 echo "Transaksi sewa: \n";
+//                 for ($i = 0; $i < count($temp); $i++) {
+//                     for ($i = 0; $i < count($rent); $i++) {
+//                         if ($rent[$i]["bookId"] == $temp[$i]["id"]) {
+//                             echo $i + 1 . ". " . showBook(books: $temp[$i], author: $author, genre: $genre)
+//                                 . "\n", showTenant($rent) . PHP_EOL;
+//                         }
+//                     }
+//                 }
+//             }
+//         }
+//         return $temp;
+//     }
+// }
