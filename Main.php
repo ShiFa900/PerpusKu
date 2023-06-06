@@ -1,17 +1,17 @@
 <?php
 
-require_once __DIR__ . "\Utils.php";
-require_once "Includes\KelolaKoleksi\Book\Add.php";
-require_once "Includes\KelolaKoleksi\Book\Delete.php";
-require_once "Includes\KelolaKoleksi\Authors\Add.php";
-require_once "Includes\KelolaKoleksi\Authors\Edit.php";
-require_once "Includes\KelolaKoleksi\Authors\Delete.php";
-require_once "Includes\KelolaKoleksi\Genres\Delete.php";
-require_once "Includes\KelolaKoleksi\Genres\Add.php";
-require_once "Includes\KelolaKoleksi\Genres\Edit.php";
-require_once "Includes\KelolaKoleksi\Book\Edit.php";
-require_once "includes\Peminjaman\Add.php";
-require_once "includes\Peminjaman\Return.php";
+require_once __DIR__ . "/Utils.php";
+require_once __DIR__ . "/Includes/KelolaKoleksi/Book/Add.php";
+require_once __DIR__ . "/Includes/KelolaKoleksi/Book/Delete.php";
+require_once __DIR__ . "/Includes/KelolaKoleksi/Authors/Add.php";
+require_once __DIR__ . "/Includes/KelolaKoleksi/Authors/Edit.php";
+require_once __DIR__ . "/Includes/KelolaKoleksi/Authors/Delete.php";
+require_once __DIR__ . "/Includes/KelolaKoleksi/Genres/Delete.php";
+require_once __DIR__ . "/Includes/KelolaKoleksi/Genres/Add.php";
+require_once __DIR__ . "/Includes/KelolaKoleksi/Genres/Edit.php";
+require_once __DIR__ . "/Includes/KelolaKoleksi/Book/Edit.php";
+require_once __DIR__ . "/Includes/Peminjaman/Add.php";
+require_once __DIR__ . "/Includes/Peminjaman/Return.php";
 
 /**
  * function main menu

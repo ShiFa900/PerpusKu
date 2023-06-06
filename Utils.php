@@ -223,8 +223,14 @@ function askForRent(array $rent, int $bookId)
         } else {
             $name = askForName();
             $duration = askForRentalDuration();
+
+            // TODO: nominal standard diambil dari attribute "rentalFee" pada item ybs di $books
             $rent = rentalPrice("Biaya sewa (standarnya Rp.5000): ");
             $currentTime = time();
+            
+            // TODO: wrong formula! 
+            // $duration is in days BUT $shouldReturnedOn and $currentTime is in timestamp (seconds)
+            // 1 day = 24*60*60 seconds
             $shouldReturnedOn = date(date("j") + $duration) .  date(" F Y");
         }
 
@@ -234,6 +240,7 @@ function askForRent(array $rent, int $bookId)
             "nama" => $name,
             "nik" => $nik,
             "duration" => $duration,
+            // TODO: should be `amount`, not `rentalFee`
             "rentalFee" => $rent,
             "rentedOn" => $currentTime,
             "shouldReturnedOn" => $shouldReturnedOn,

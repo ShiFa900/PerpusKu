@@ -1,6 +1,6 @@
 <?php
 
-require_once "Utils.php";
+require_once __DIR__ . "/../../../Utils.php";
 
 function deleteBook(array $books, array $author, array $genre, array $rent)
 {
@@ -23,6 +23,7 @@ function deleteBook(array $books, array $author, array $genre, array $rent)
                     if ($idBookToBeDeleted == $rent[$i]["bookId"]) {
                         echo "Tidak bisa menghapus, karena data buku masih tersimpan di database penyewaan" . PHP_EOL;
                     } else {
+                        // TODO: why do we have another for loop again here?
                         for ($i = 0; $i < count($books); $i++) {
                             if ($idBookToBeDeleted == $books[$i]["id"]) {
                                 $bookTitle = $books[$i]["title"];

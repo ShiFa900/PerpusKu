@@ -21,6 +21,7 @@ function deleteAuthor(array $author, array $books)
                     if ($bookAuthor != null) {
                         echo "Penulis tidak bisa dihapus, karena sudah memiliki data buku yang terpublikasikan" . PHP_EOL;
                     } else {
+                        // TODO: why do we have another for loop again here?
                         for ($i = 0; $i < count($author); $i++) {
                             $nama = "";
                             if ($idAuthorToBeDeleted == $author[$i]["id"]) {

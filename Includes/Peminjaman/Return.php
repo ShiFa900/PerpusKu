@@ -1,6 +1,6 @@
 <?php
 
-require_once "Utils.php";
+require_once __DIR__ . "/../../Utils.php";
 
 function bookReturn(array $rents, array $books, array $author, array $genre)
 {
@@ -10,6 +10,10 @@ function bookReturn(array $rents, array $books, array $author, array $genre)
             break;
         } else {
             echo "PENGEMBALIAN" . PHP_EOL;
+
+
+            // TODO: Seharusnya yang dicari adalah judul-judul buku yang ada di $rents db..
+
             // lakukan pencarian untuk judul buku yang akan di tutup proses transaksinya
             echo "======" . PHP_EOL;
             $search = searchForBookAndTenant($rents, $books, $author, $genre);
@@ -22,6 +26,7 @@ function bookReturn(array $rents, array $books, array $author, array $genre)
             }
             // showTenant($temp);
             echo "======" . PHP_EOL;
+            
             $target = getIndex($search, "Pilih transaksi sewa buku yang akan ditutup: ");
             if (confirm("Lanjutkan proses pengembalian (y/n)? ") == false) {
                 echo "Penutupan sewa buku dibatalkan";

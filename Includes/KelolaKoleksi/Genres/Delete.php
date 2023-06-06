@@ -1,6 +1,6 @@
 <?php
 
-require_once "Utils.php";
+require_once __DIR__ . "/../../../Utils.php";
 
 function deleteGenre(array $genre, array $books)
 {
@@ -22,6 +22,7 @@ function deleteGenre(array $genre, array $books)
                     if ($bookGenre == false) {
                         echo "Genre tidak bisa dihapus, karena dimuat di dalam buku yang sudah terpublikasi" . PHP_EOL;
                     } else {
+                        // TODO: why do we have another for loop again here?
                         for ($i = 0; $i < count($genre); $i++) {
                             $genreName = "";
                             if ($idGenreToBeDeleted == $genre[$i]["id"]) {

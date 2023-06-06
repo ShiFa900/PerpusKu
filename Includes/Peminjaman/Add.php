@@ -1,6 +1,6 @@
 <?php
 
-require_once "Utils.php";
+require_once __DIR__ . "/../../Utils.php";
 
 function addRent(array $rent, array $books, array $authors, array $genres)
 {
