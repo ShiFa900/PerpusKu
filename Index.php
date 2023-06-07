@@ -34,6 +34,14 @@ $books = [
         "authorId" => 38,
         "genreId" => 2,
         "rentalFee" => 9000,
+    ),
+    array(
+        "id" => 5,
+        "title" => "Hidup sekali #2",
+        "year" => 2017,
+        "authorId" => 38,
+        "genreId" => 2,
+        "rentalFee" => 20000,
     )
 ];
 
@@ -44,9 +52,9 @@ $rents = [
         "nik" => 213,
         "name" => "Dipa",
         "amount" => 15000,
-        "rentedOn" => 1684410490,
+        "rentedOn" => 1688577681,
         "duration" => 3,
-        "shouldReturnedOn" => 1684642344,
+        "shouldReturnedOn" => 1688750481,
         "isReturned" => false,
         "returnedOn" => null,
     ),
@@ -56,9 +64,9 @@ $rents = [
         "nik" => 332,
         "name" => "Mimi",
         "amount" => 15000,
-        "rentedOn" => 1684410490,
+        "rentedOn" => 1685812881,
         "duration" => 2,
-        "shouldReturnedOn" => 1684642344,
+        "shouldReturnedOn" => 1685985681,
         "isReturned" => false,
         "returnedOn" => null,
     )

@@ -12,6 +12,7 @@ require_once __DIR__ . "/Includes/KelolaKoleksi/Genres/Edit.php";
 require_once __DIR__ . "/Includes/KelolaKoleksi/Book/Edit.php";
 require_once __DIR__ . "/Includes/Peminjaman/Add.php";
 require_once __DIR__ . "/Includes/Peminjaman/Return.php";
+require_once __DIR__ . "/Includes/Peminjaman/loanList.php";
 
 /**
  * function main menu
@@ -256,6 +257,7 @@ function mainBookBorrowingMenu()
         $menu = showbookBorrowingMenu();
         if ($menu == 1) {
             // daftar peminjaman
+            showLoanList($rents, $books, $authors, $genres);
         } elseif ($menu == 2) {
             // tambah data peminjaman
             $temp = addRent($rents, $books, $authors, $genres);

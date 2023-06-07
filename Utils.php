@@ -215,7 +215,7 @@ function askForRent(array $rent, array $book)
         $id = getId($rent);
         $nik = askForNik();
 
-        if (isNikOnRent($rent, $nik) == false) {
+        if (isNikOnRent($rent, $nik) == true) {
             echo "Maaf, kamu sedang meminjam buku yang belum dikembalikan :(" . PHP_EOL;
             return null;
         }
@@ -439,18 +439,6 @@ function showTenant(array $rent)
     }
 }
 
-function showLoanList(array $rents, array $books)
-{
-    if (isEmpty($rents) == false) {
-        echo "Maaf, data penyewaan kosong" . PHP_EOL;
-    } else {
-        for ($i = 0; $i < count($rents); $i++) {
-            if ($rents[$i]["isReturned"] == false) {
-                $over = $rents[$i]["rentedOn"] + date($rents[$i]["duration"]);
-            }
-        }
-    }
-}
 function echoBook(array $showNewBook, array $genres, array $authors)
 {
     echo "======" . PHP_EOL;

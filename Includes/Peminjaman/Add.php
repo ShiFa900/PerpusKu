@@ -14,12 +14,20 @@ function addRent(array $rent, array $books, array $authors, array $genres)
                 break;
             } else {
                 echo "======" . PHP_EOL;
-                getIndex($search, "Pilih buku yang akan disewa: ");
+                $target = getIndex($search, "Pilih buku yang akan disewa: ");
+                $id = $search[$target - 1]["id"];
                 echo "======" . PHP_EOL;
                 echo "TAMBAH PEMINJAMAN" . PHP_EOL;
 
+                for ($j = 0; $j < count($books); $j++) {
+                    if ($id == $books[$j]["id"]) {
+                        $idBook = $books[$j];
+                    }
+                }
+
                 for ($i = 0; $i < count($search); $i++) {
-                    $newRent = askForRent($rent, $search[$i]);
+
+                    $newRent = askForRent($rent, $idBook);
                     if ($newRent == null) {
                         return null;
                     } else {

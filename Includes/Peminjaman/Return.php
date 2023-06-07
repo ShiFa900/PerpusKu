@@ -27,11 +27,15 @@ function bookReturn(array $rents, array $books, array $author, array $genre)
                 $theBookAuthor = $result[$i][2];
                 $theBookGenre = $result[$i][3];
 
+                // mencari keterlambatan pengembalian buku
+                $time = time();
+                $diff = $time - $theRent["shouldReturnedOn"];
+
                 // show...
                 echo "Transaksi sewa: " . PHP_EOL;
                 echo $i + 1 . ". " . $theRent["name"] . " (NIK: " . $theRent["nik"] . ") pada " .
-                    date('j F Y', $theRent["rentedOn"]) . " -> " . date('j F Y', $theRent["shouldReturnedOn"])
-                    . PHP_EOL;
+                    date('j F Y', ceil($theRent["rentedOn"])) . " -> " . date('j F Y', ceil($theRent["shouldReturnedOn"]))
+                    . " (telat " . floor(date('j', $diff / 60 * 60 * 24)) . " hari)" . PHP_EOL;
                 echo $theBook["title"] . ", oleh " . $theBookAuthor["name"] . " - " .
                     $theBook["year"] . " (" . $theBookGenre["genre"] . ")" . PHP_EOL;
                 echo "\n";
@@ -48,6 +52,7 @@ function bookReturn(array $rents, array $books, array $author, array $genre)
                         $rents[$i]["isReturned"] = true;
                         $rents[$i]["returnedOn"] = time();
                         echo "Data sewa buku telah ditutup!" . PHP_EOL;
+                        echo "======" . PHP_EOL;
                         break;
                     }
                 }
@@ -98,42 +103,3 @@ function searchBookToBeReturned(array $rents, array $books, $authors, $genres)
     }
     return null;
 }
-
-// function searchForBookAndTenant(array $rent, array $books, array $author, array $genre)
-// {
-//     while (true) {
-//         if (isEmpty($rent) == 0) {
-//             echo "Kamu belum menambahkan data peminjamnan :(";
-//             break;
-//         } else {
-//             echo "Pencarian judul buku: ";
-//             $title = getStringInput();
-//             $temp = [];
-
-//             for ($i = 0; $i < count($books); $i++) {
-//                 if (preg_match("/$title/i", $books[$i]["title"])) {
-//                     if (in_array($books[$i]["title"], $temp) == false) {
-//                         $temp[] = $books[$i];
-//                     }
-//                 }
-//             }
-
-//             if (count($temp) == 0) {
-//                 echo "Maaf, tidak ada buku dengan menggunakan kata kunci tsb." . PHP_EOL;
-//                 return null;
-//             } else {
-//                 echo "Hasil pencarian: " . PHP_EOL;
-//                 echo "Transaksi sewa: \n";
-//                 for ($i = 0; $i < count($temp); $i++) {
-//                     for ($i = 0; $i < count($rent); $i++) {
-//                         if ($rent[$i]["bookId"] == $temp[$i]["id"]) {
-//                             echo $i + 1 . ". " . showBook(books: $temp[$i], author: $author, genre: $genre)
-//                                 . "\n", showTenant($rent) . PHP_EOL;
-//                         }
-//                     }
-//                 }
-//             }
-//         }
-//         return $temp;
-//     }
-// }
