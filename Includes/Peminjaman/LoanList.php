@@ -51,5 +51,19 @@ function getLoanData(array $rents, array $books, array $authors)
 function sortLoanData(array &$loanData)
 {
     // sort by "shouldReturnedOn" field
-    array_multisort($loanData, SORT_DESC, $loanData);
+    // array_multisort($loanData, SORT_DESC, $loanData);
+
+
+    for ($i = 0; $i < count($loanData); $i++) {
+        $time = $loanData[$i];
+        $j = $i - 1;
+
+        while ($j >= 0 && $loanData[$j]["shoulReturnedOn"] < $time["rentedOn"]) {
+            $loanData[$j + 1] = $loanData[$j];
+            $j = $j - 1;
+        }
+
+        $loanData[$j + 1] = $time;
+    }
+    return $loanData;
 }
