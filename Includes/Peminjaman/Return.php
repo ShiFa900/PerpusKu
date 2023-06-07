@@ -7,19 +7,18 @@ function bookReturn(array $rents, array $books, array $author, array $genre)
     // while (true) {
     if (isEmpty($rents) == 0) {
         echo "Kamu belum meminjam buku apapun :(";
-        // break;
     } else {
         echo "PENGEMBALIAN" . PHP_EOL;
-
-        // lakukan pencarian untuk judul buku yang akan di tutup proses transaksinya
         echo "======" . PHP_EOL;
 
+        // lakukan pencarian untuk judul buku yang akan di tutup proses transaksinya
         // watchout, $result isinya adalah array of 4 data
         $result = searchBookToBeReturned($rents, $books, $author, $genre);
 
         if ($result != null) {
             echo "======" . PHP_EOL;
 
+            echo "Transaksi sewa: " . PHP_EOL;
             // TODO: tampilkan
             for ($i = 0; $i < count($result); $i++) {
                 $theRent = $result[$i][0];
@@ -27,18 +26,7 @@ function bookReturn(array $rents, array $books, array $author, array $genre)
                 $theBookAuthor = $result[$i][2];
                 $theBookGenre = $result[$i][3];
 
-                // mencari keterlambatan pengembalian buku
-                $time = time();
-                $diff = $time - $theRent["shouldReturnedOn"];
-
-                // show...
-                echo "Transaksi sewa: " . PHP_EOL;
-                echo $i + 1 . ". " . $theRent["name"] . " (NIK: " . $theRent["nik"] . ") pada " .
-                    date('j F Y', ceil($theRent["rentedOn"])) . " -> " . date('j F Y', ceil($theRent["shouldReturnedOn"]))
-                    . " (telat " . floor(date('j', $diff / 60 * 60 * 24)) . " hari)" . PHP_EOL;
-                echo $theBook["title"] . ", oleh " . $theBookAuthor["name"] . " - " .
-                    $theBook["year"] . " (" . $theBookGenre["genre"] . ")" . PHP_EOL;
-                echo "\n";
+                showTransaction($theRent, $theBook, $theBookAuthor, $theBookGenre, $i);
             }
 
             $target = getIndex($result, "Pilih transaksi sewa buku yang akan ditutup: ");
@@ -49,8 +37,9 @@ function bookReturn(array $rents, array $books, array $author, array $genre)
                 $theRentData = $result[$target - 1][0];
                 for ($i = 0; $i < count($rents); $i++) {
                     if ($theRentData["id"] == $rents[$i]["id"]) {
+                        // penutupan transaksi ditandai dengan pengubahan value dari key isReturned dan isReturned
                         $rents[$i]["isReturned"] = true;
-                        $rents[$i]["returnedOn"] = time();
+                        $rents[$i]["isReturned"] = time();
                         echo "Data sewa buku telah ditutup!" . PHP_EOL;
                         echo "======" . PHP_EOL;
                         break;
@@ -87,7 +76,7 @@ function searchBookToBeReturned(array $rents, array $books, $authors, $genres)
                                 // data rent:
                                 0 => $rents[$i],
                                 // data si buku:
-                                1 => $bookWithTitles[$j],
+                                1 => ($bookWithTitles[$j]),
                                 // penulis si buku:
                                 2 => getFirstDataFromArray($authors, $bookWithTitles[$j]["authorId"], "id"),
                                 // genre si buku:
@@ -102,4 +91,21 @@ function searchBookToBeReturned(array $rents, array $books, $authors, $genres)
         }
     }
     return null;
+}
+
+function showTransaction(array $rents, array $books, array $author, array $genre, int $index)
+{
+    // mencari selisih antara tanggal sekarang dengan tanggal dimana buku seharusnya dikembalikan
+    $diff = abs(time() - $rents["shouldReturnedOn"]);
+    // perhitungan untuk mendapatkan hari
+    $readTime = floor($diff / 60 * 60 * 24);
+
+    // show...
+    echo $index + 1 . ". " . $rents["name"] . " (NIK: " . $rents["nik"] . ") pada " .
+        date('j F Y', ceil($rents["rentedOn"])) . " -> " . date('j F Y', ceil($rents["shouldReturnedOn"]))
+        . " (telat " .  date('j', $readTime) . " hari)" . PHP_EOL;
+
+    echo $books["title"] . ", oleh " . $author["name"] . " - " .
+        $books["year"] . " (" . $genre["genre"] . ")" . PHP_EOL;
+    echo "\n";
 }

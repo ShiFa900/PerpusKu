@@ -38,7 +38,6 @@ function getLoanData(array $rents, array $books, array $authors)
                     0 => $rents[$i],
                     1 => $books[$j],
                     2 => getFirstDataFromArray($authors, $books[$j]["authorId"], "id"),
-                    // 3 => getFirstDataFromArray($genres, $books["genreId"], "id"),
                 ];
             }
         }
