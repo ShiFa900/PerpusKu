@@ -96,16 +96,31 @@ function searchBookToBeReturned(array $rents, array $books, $authors, $genres)
 function showTransaction(array $rents, array $books, array $author, array $genre, int $index)
 {
     // mencari selisih antara tanggal sekarang dengan tanggal dimana buku seharusnya dikembalikan
-    $diff = abs(time() - $rents["shouldReturnedOn"]);
-    // perhitungan untuk mendapatkan hari
-    $readTime = floor($diff / 60 * 60 * 24);
+    // perhitungan untuk mendapatkan ketelatan
+    $lateInDays = getLateInDays($rents["rentedOn"], $rents["shouldReturnedOn"]);
 
     // show...
-    echo $index + 1 . ". " . $rents["name"] . " (NIK: " . $rents["nik"] . ") pada " .
-        date('j F Y', ceil($rents["rentedOn"])) . " -> " . date('j F Y', ceil($rents["shouldReturnedOn"]))
-        . " (telat " .  date('j', $readTime) . " hari)" . PHP_EOL;
+    echo "\n" . $index + 1 . ". " . $rents["name"] . " (NIK: " . $rents["nik"] . ") pada " .
+        date('j F Y', $rents["rentedOn"]) . " -> " . date('j F Y', $rents["shouldReturnedOn"]);
 
-    echo $books["title"] . ", oleh " . $author["name"] . " - " .
+    if ($lateInDays > 0) {
+        echo " (telat $lateInDays hari)";
+    }
+
+    echo "\n" . $books["title"] . ", oleh " . $author["name"] . " - " .
         $books["year"] . " (" . $genre["genre"] . ")" . PHP_EOL;
     echo "\n";
+}
+
+function getLateInDays(int $rentDate, int $shouldReturnedDate): int
+{
+    // make sure $shouldReturnedDate > $rentDate
+    if ($shouldReturnedDate > $rentDate) {
+        // masih dalam satuan seconds
+        $diff = time() - $shouldReturnedDate;
+
+        // konversi ke hari
+        return floor($diff / (60 * 60 * 24));
+    }
+    return -1;
 }

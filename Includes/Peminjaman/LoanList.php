@@ -14,6 +14,9 @@ function showLoanList(array $rents, array $books, array $authors)
 
             $loanData = getLoanData($rents, $books, $authors);
 
+            // watchout: ini passing function params by reference
+            sortLoanData($loanData);
+
             for ($i = 0; $i < count($loanData); $i++) {
                 $theRents = $loanData[$i][0];
                 $theBooks = $loanData[$i][1];
@@ -43,4 +46,10 @@ function getLoanData(array $rents, array $books, array $authors)
         }
     }
     return $temp;
+}
+
+function sortLoanData(array &$loanData)
+{
+    // sort by "shouldReturnedOn" field
+    array_multisort($loanData, SORT_DESC, $loanData);
 }

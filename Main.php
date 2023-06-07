@@ -12,7 +12,7 @@ require_once __DIR__ . "/Includes/KelolaKoleksi/Genres/Edit.php";
 require_once __DIR__ . "/Includes/KelolaKoleksi/Book/Edit.php";
 require_once __DIR__ . "/Includes/Peminjaman/Add.php";
 require_once __DIR__ . "/Includes/Peminjaman/Return.php";
-require_once __DIR__ . "/Includes/Peminjaman/loanList.php";
+require_once __DIR__ . "/Includes/Peminjaman/LoanList.php";
 
 /**
  * function main menu
