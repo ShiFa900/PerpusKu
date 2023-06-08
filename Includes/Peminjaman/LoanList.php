@@ -18,13 +18,12 @@ function showLoanList(array $rents, array $books, array $authors)
             sortLoanData($loanData);
 
             for ($i = 0; $i < count($loanData); $i++) {
+
                 $theRents = $loanData[$i][0];
                 $theBooks = $loanData[$i][1];
                 $theBookAuthor = $loanData[$i][2];
 
-                echo $i + 1 . ". " .  $theBooks["title"] . " (" . $theBookAuthor["name"] . ", " . $theBooks["year"] .
-                    ") -> " . $theRents["name"] . " (NIK: " . $theRents["nik"] . "), " .
-                    date('j F Y', $theRents["shouldReturnedOn"]) . PHP_EOL;
+                echoLoanList($theRents, $theBooks, $theBookAuthor, $i);
             }
         }
         return $rents;
@@ -50,20 +49,40 @@ function getLoanData(array $rents, array $books, array $authors)
 
 function sortLoanData(array &$loanData)
 {
-    // sort by "shouldReturnedOn" field
-    // array_multisort($loanData, SORT_DESC, $loanData);
+    for ($i = 1; $i < count($loanData); $i++) {
+        $loanKeN = $loanData[$i];
 
-
-    for ($i = 0; $i < count($loanData); $i++) {
-        $time = $loanData[$i];
+        //variable j akan bernilai $i sekarang dikurangi dengan 1 
         $j = $i - 1;
 
-        while ($j >= 0 && $loanData[$j]["shoulReturnedOn"] < $time["rentedOn"]) {
+        //jika umur persons paling kiri lebih besar dari umur dikanannya, maka tukar posisi antar keduanya
+        while ($j >= 0 && $loanData[0][0]["shouldReturnedOn"] > $loanKeN[0]["shouldReturnedOn"]) {
+
             $loanData[$j + 1] = $loanData[$j];
             $j = $j - 1;
         }
-
-        $loanData[$j + 1] = $time;
+        //umur ke-n sekarang bernilai 
+        $loanData[$j + 1] = $loanKeN;
     }
     return $loanData;
+}
+
+function echoLoanList(array $theRents, array $theBooks, array $theBookAuthor, $index)
+{
+    $tempForLate = [];
+    $tempForOnGoing = [];
+    $lateness = getLateInDays($theRents["rentedOn"], $theRents["shouldReturnedOn"]);
+
+    for ($i = 0; $i < count($theRents); $i++) {
+        if ($lateness > 0) {
+            $tempForLate[] = $theRents;
+            echo "Melewati waktu sewa (" . count($tempForLate) . "): " . PHP_EOL;
+        } else {
+            $tempForOnGoing[] = $theRents;
+            echo "Sewa berjalan (" . count($tempForOnGoing) . "): " . PHP_EOL;
+        }
+        echo $index + 1 . ". " .  $theBooks["title"] . " (" . $theBookAuthor["name"] . ", " . $theBooks["year"] .
+            ") -> " . $theRents["name"] . " (NIK: " . $theRents["nik"] . "), " .
+            date('j F Y', $theRents["shouldReturnedOn"]) . PHP_EOL;
+    }
 }

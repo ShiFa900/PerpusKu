@@ -109,18 +109,5 @@ function showTransaction(array $rents, array $books, array $author, array $genre
 
     echo "\n" . $books["title"] . ", oleh " . $author["name"] . " - " .
         $books["year"] . " (" . $genre["genre"] . ")" . PHP_EOL;
-    echo "\n";
-}
-
-function getLateInDays(int $rentDate, int $shouldReturnedDate): int
-{
-    // make sure $shouldReturnedDate > $rentDate
-    if ($shouldReturnedDate > $rentDate) {
-        // masih dalam satuan seconds
-        $diff = time() - $shouldReturnedDate;
-
-        // konversi ke hari
-        return floor($diff / (60 * 60 * 24));
-    }
-    return -1;
+    echo "\n======\n";
 }

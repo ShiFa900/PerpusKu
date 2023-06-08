@@ -477,6 +477,20 @@ function getIndex(array $input, string $sentence)
         }
     }
 }
+
+function getLateInDays(int $rentDate, int $shouldReturnedDate): int
+{
+    // make sure $shouldReturnedDate > $rentDate
+    if ($shouldReturnedDate > $rentDate) {
+        // masih dalam satuan seconds
+        $diff = time() - $shouldReturnedDate;
+
+        // konversi ke hari
+        return floor($diff / (60 * 60 * 24));
+    }
+    return -1;
+}
+
 function askForAuthorName()
 {
     while (true) {
