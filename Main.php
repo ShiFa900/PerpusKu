@@ -259,7 +259,7 @@ function mainBookBorrowingMenu()
         $menu = showbookBorrowingMenu();
         if ($menu == 1) {
             // daftar peminjaman
-            showLoanList($rents, $books, $authors, $genres);
+            showLoanList($rents, $books, $authors);
         } elseif ($menu == 2) {
             // tambah data peminjaman
             $temp = addRent($rents, $books, $authors, $genres);
