@@ -1,12 +1,16 @@
 <?php
 
+use JetBrains\PhpStorm\Internal\ReturnTypeContract;
+
 require_once __DIR__ . "/../../Utils.php";
+
 
 function bookReturn(array $rents, array $books, array $author, array $genre)
 {
     // while (true) {
-    if (isEmpty($rents) == 0) {
-        echo "Kamu belum meminjam buku apapun :(";
+    $i = 0;
+    if ($rents[$i]["isReturned"] != false) {
+        return null;
     } else {
         echo "PENGEMBALIAN" . PHP_EOL;
         echo "======" . PHP_EOL;
@@ -47,7 +51,7 @@ function bookReturn(array $rents, array $books, array $author, array $genre)
                 }
             }
         }
-
+        $i++;
         return $rents;
     }
 }

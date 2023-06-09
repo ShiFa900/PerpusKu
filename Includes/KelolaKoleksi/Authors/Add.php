@@ -10,7 +10,7 @@ function addAuthor(array $authors): array
 {
     while (true) {
         $authorName = askForAuthorName();
-        $adaAuthor = isAuthorExist($authors, $authorName);
+        $adaAuthor = isAuthorExists($authors, $authorName);
 
         if ($adaAuthor == true) {
             echo "Maaf, \"$authorName\" sudah ada pada database!" . PHP_EOL;

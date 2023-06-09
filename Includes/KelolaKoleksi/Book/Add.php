@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__ . "/../../../Utils.php";
+require_once __DIR__ . "/../../../NewBookUtils.php";
 
 function addBook(array $books, array $genres, array $authors)
 {

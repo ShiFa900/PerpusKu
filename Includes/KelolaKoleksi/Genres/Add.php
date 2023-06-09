@@ -4,7 +4,7 @@ function addGenre(array $genres): array
 {
     while (true) {
         $genreName = askForGenreName();
-        $adaGenre = isGenreExist($genres, $genreName);
+        $adaGenre = isGenreExists($genres, $genreName);
 
         if ($adaGenre == true) {
             echo "Maaf genre \"$genreName\" sudah ada pada database!" . PHP_EOL;

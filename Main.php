@@ -1,6 +1,8 @@
 <?php
 
 require_once __DIR__ . "/Utils.php";
+require_once __DIR__ . "/RentalUtils.php";
+require_once __DIR__ . "/NewBookUtils.php";
 require_once __DIR__ . "/Includes/KelolaKoleksi/Book/Add.php";
 require_once __DIR__ . "/Includes/KelolaKoleksi/Book/Delete.php";
 require_once __DIR__ . "/Includes/KelolaKoleksi/Authors/Add.php";

@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__ . "/../../Utils.php";
+require_once __DIR__ . "/../../RentalUtils.php";
 
 function addRent(array $rent, array $books, array $authors, array $genres)
 {
@@ -27,7 +28,7 @@ function addRent(array $rent, array $books, array $authors, array $genres)
 
                 for ($i = 0; $i < count($search); $i++) {
 
-                    $newRent = askForRent($rent, $idBook);
+                    $newRent = askForNewRent($rent, $idBook);
                     if ($newRent == null) {
                         return null;
                     } else {

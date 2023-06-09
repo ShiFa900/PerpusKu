@@ -39,90 +39,6 @@ function isAlpha(): string
     return "";
 }
 
-function bookTitle()
-{
-    while (true) {
-        echo "Judul buku dan nomor seri (nomor koleksi): ";
-        $title = getStringInput();
-
-        if ($title == "" || strlen($title) > 30) {
-            echo "Masukkan judul buku dengan benar" . PHP_EOL;
-        } else {
-            return $title;
-        }
-    }
-}
-
-function publicationYear()
-{
-    while (true) {
-        echo "Tahun penerbitan: ";
-        $publicationYear = getNumberInput();
-
-        if ($publicationYear == "") {
-            echo "Masukkan tahun terbit dengan benar" . PHP_EOL;
-        } else {
-            return $publicationYear;
-        }
-    }
-}
-
-function rentalPrice(string $input)
-{
-    while (true) {
-        echo $input;
-        $rent = getNumberFloat();
-
-        if ($rent == "") {
-            echo "Masukkan harga sewa dengan benar" . PHP_EOL;
-        } else {
-            $rupiah = "Rp " . number_format($rent);
-            return $rupiah;
-        }
-    }
-}
-
-function askForNik()
-{
-    while (true) {
-        echo "NIK penyewa: ";
-        $nik = getStringInput();
-
-        if ($nik == "") {
-            echo "Masukkan NIK dengan benar" . PHP_EOL;
-        } else {
-            return $nik;
-        }
-    }
-}
-
-function askForName()
-{
-    while (true) {
-        echo "Nama penyewa: ";
-        $name = getStringInput();
-
-        if ($name == "") {
-            echo "Masukkan nama penyewa dengan benar" . PHP_EOL;
-        } else {
-            return ucwords($name);
-        }
-    }
-}
-
-function askForRentalDuration()
-{
-    while (true) {
-        echo "Durasi sewa (hari): ";
-        $rentalDuration = getNumberInput();
-
-        if ($rentalDuration == "") {
-            echo "Masukkan durasi sewa hanya dengan angka" . PHP_EOL;
-        } else {
-            return $rentalDuration;
-        }
-    }
-}
 
 function getAuthorBooks(array $author, array $books)
 {
@@ -138,7 +54,7 @@ function getAuthorBooks(array $author, array $books)
 function getGenreBooks(array $genre, array $books)
 {
     $temp = [];
-    for ($i = 0; $i < count($genre); $i++) {
+    for ($i = 0; $i < count($books); $i++) {
         if ($books[$i]["genreId"] == $genre["id"]) {
             $temp[] = $books[$i];
         }
@@ -156,98 +72,18 @@ function isNikOnRent(array $rent, string $nik): bool
     return false;
 }
 
-function askForNewBook()
+function askForRentalPrice(string $input)
 {
-    global $authors;
-    global $genres;
-    global $books;
-
     while (true) {
-        $bookTitle = bookTitle();
-        // lakukan pengecekan apakah judul dari buku baru ini sudah ada pada database
-        $adaBook = isBookExist($books, $bookTitle);
-        if ($adaBook) {
-            echo "Maaf, buku dengan judul " . '"' . ucwords($bookTitle) . '"' . " sudah ada pada database" . PHP_EOL;
-            break;
+        echo $input;
+        $rent = getNumberFloat();
+
+        if ($rent == "") {
+            echo "Masukkan harga sewa dengan benar" . PHP_EOL;
         } else {
-            $year = publicationYear();
-            $rent = rentalPrice("Harga sewa: ");
-            $id = getId($books);
-
-
-            echo "======" . PHP_EOL;
-            echo "Pemilihan genre" . PHP_EOL;
-
-            // cari genre yang dipilih
-
-            $searchGenre = searchGenres($genres);
-            if ($searchGenre == null) {
-                return null;
-            }
-
-            $genreOrdinalNumber = getIndex($searchGenre, "Pilih genre diatas: ");
-            $selectedGenre = $searchGenre[$genreOrdinalNumber - 1];
-
-            echo "======" . PHP_EOL;
-            echo "Pemilihan penulis" . PHP_EOL;
-            $searchAuthor = searchAuthors($authors);
-            if ($searchAuthor == null) {
-                return null;
-            }
-            $authorOrdinalNumber = getIndex($searchAuthor, "Pilih author diatas: ");
-            $selectedAuthor = $searchAuthor[$authorOrdinalNumber - 1];
+            $rupiah = "Rp " . number_format($rent);
+            return $rupiah;
         }
-
-        return [
-            "title" => $bookTitle,
-            "year" => $year,
-            "rentalFee" => $rent,
-            "genreId" => $selectedGenre["id"],
-            "authorId" => $selectedAuthor["id"],
-            "id" => $id,
-        ];
-    }
-}
-
-function askForRent(array $rent, array $book)
-{
-    while (true) {
-        $id = getId($rent);
-        $nik = askForNik();
-
-        if (isNikOnRent($rent, $nik) == true) {
-            echo "Maaf, kamu sedang meminjam buku yang belum dikembalikan :(" . PHP_EOL;
-            return null;
-        }
-
-        $name = askForName();
-
-        // duration in days
-        $duration = askForRentalDuration();
-
-        // nominal standard diambil dari attribute "rentalFee" pada item ybs di $books
-        $defaultRentalFee = number_format($book["rentalFee"]);
-        $rent = rentalPrice("Biaya sewa (standarnya Rp $defaultRentalFee): ");
-
-        // timestamp untuk kapan si buku dikembalikan
-        // 1 day = 24*60*60 seconds
-        $currentTime = time();
-        $shouldReturnedOn = $currentTime + ($duration * 24 * 60 * 60);
-
-        return [
-            "id" => $id,
-            "bookId" => $book["id"],
-            "name" => $name,
-            "nik" => $nik,
-            "duration" => $duration,
-            "amount" => $rent,
-            "rentedOn" => $currentTime,
-            "shouldReturnedOn" => $shouldReturnedOn,
-            // otomatis akan ter-assign jika buku telah dikembalikan (true)
-            "isReturned" => false,
-            // otomatis akan terisi dengan tanggal dimana penyewa mengembalikan buku (jika buku sudah dikembalikan)
-            "returnedOn" => null,
-        ];
     }
 }
 
@@ -264,7 +100,7 @@ function askForOrdinalNumber(string $input)
     }
 }
 
-function getId(array $input)
+function generatedId(array $input)
 {
     if (count($input) == 0) {
         return 1;
@@ -273,7 +109,7 @@ function getId(array $input)
 }
 
 
-function getAuthorsName(array $authors, string $name): array
+function getAuthorsWithName(array $authors, string $name): array
 {
     for ($i = 0; $i < count($authors); $i++) {
         if ($name == $authors[$i]["name"]) {
@@ -283,7 +119,7 @@ function getAuthorsName(array $authors, string $name): array
     return [];
 }
 
-function isAuthorExist(array $authors, string $name): bool
+function isAuthorExists(array $authors, string $name): bool
 {
     for ($i = 0; $i < count($authors); $i++) {
         if (strtolower($name) == strtolower($authors[$i]["name"])) {
@@ -293,7 +129,7 @@ function isAuthorExist(array $authors, string $name): bool
     return false;
 }
 
-function isGenreExist(array $genres, string $input): bool
+function isGenreExists(array $genres, string $input): bool
 {
     for ($i = 0; $i < count($genres); $i++) {
         if (strtolower($input) == strtolower($genres[$i]["genre"])) {
@@ -303,7 +139,7 @@ function isGenreExist(array $genres, string $input): bool
     return false;
 }
 
-function isBookExist(array $books, string $title)
+function isBookExists(array $books, string $title)
 {
     for ($i = 0; $i < count($books); $i++) {
         if (strtolower($title) == strtolower($books[$i]["title"])) {
@@ -326,19 +162,10 @@ function getFirstDataFromArray(array $input, int $id, string $keyName): array
     return null;
 }
 
-function booksId(array $books, string $id)
-{
-    for ($i = 0; $i < count($books); $i++) {
-        if ($id == $books[$i]["bookId"]) {
-            return false;
-        }
-    }
-    return true;
-}
 
 function askForAuthor(array $authors, string $name)
 {
-    $id = getId($authors);
+    $id = generatedId($authors);
 
     return [
         "name" => $name,
@@ -348,7 +175,7 @@ function askForAuthor(array $authors, string $name)
 
 function askForGenre(array $genres, string $genre)
 {
-    $id = getId($genres);
+    $id = generatedId($genres);
 
     return [
         "genre" => $genre,
@@ -419,23 +246,6 @@ function showBook(array $books, array $author, array $genre)
             " - " . $books["year"] . " (" . $genreName . ")" . PHP_EOL;
 
         return $temp;
-    }
-}
-
-function showTenant(array $rent)
-{
-    if (count($rent) == 0) {
-        echo "-";
-        return null;
-    } else {
-        for ($i = 0; $i < count($rent); $i++) {
-            $rentedOn = date('j F Y', $rent[$i]["rentedOn"]);
-            $shouldReturnedOn = date('j F Y', $rent[$i]["shouldReturnedOn"]);
-            // $lateness = 
-            // tambahkan validasi untuk menampilkan keterlambatan pengembalian buku
-            echo $rent[$i]["name"] . " (NIK: " . $rent[$i]["nik"] . ") pada " . $rentedOn .
-                " -> " . $shouldReturnedOn  . PHP_EOL;
-        }
     }
 }
 

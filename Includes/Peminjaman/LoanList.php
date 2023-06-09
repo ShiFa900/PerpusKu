@@ -5,8 +5,8 @@ require_once __DIR__ . "/../../Utils.php";
 function showLoanList(array $rents, array $books, array $authors)
 {
     while (true) {
-        if ($rents[0]["isReturned"] == true) {
-            echo "Maaf, belum ada data penyimpanan :(";
+        if (isEmpty($rents) == 0) {
+            echo "Maaf, tidak ada data di penyimpanan :(";
             break;
         } else {
             echo "DAFTAR PEMINJAMAN" . PHP_EOL;
@@ -16,15 +16,14 @@ function showLoanList(array $rents, array $books, array $authors)
 
             // watchout: ini passing function params by reference
             sortLoanData($loanData);
-
             for ($i = 0; $i < count($loanData); $i++) {
-
                 $theRents = $loanData[$i][0];
                 $theBooks = $loanData[$i][1];
                 $theBookAuthor = $loanData[$i][2];
-
-                echoLoanList($theRents, $theBooks, $theBookAuthor, $rents);
             }
+
+
+            echoLoanList($theRents, $theBooks, $theBookAuthor, $rents, $loanData);
         }
         return $rents;
     }
@@ -67,22 +66,36 @@ function sortLoanData(array &$loanData)
     return $loanData;
 }
 
-function echoLoanList(array $theRents, array $theBooks, array $theBookAuthor, array $loanData)
+function echoLoanList(array $theRents, array $theBooks, array $theBookAuthor, array $rents, array $loanData)
 {
     $tempForLate = [];
     $tempForOnGoing = [];
-    $lateness = getLateInDays($theRents["rentedOn"], $theRents["shouldReturnedOn"]);
+    $lateness = getLateInDays($theRents["isReturned"], $theRents["shouldReturnedOn"]);
 
-    for ($i = 0; $i < count($loanData); $i++) {
+    for ($i = 0; $i < count($rents); $i++) {
+
         if ($lateness > 0) {
-            $tempForLate[] = $theRents;
-            echo "Melewati waktu sewa (" . count($tempForLate) . "): " . PHP_EOL;
+            $tempForLate[] = $loanData[$i];
         } else {
-            $tempForOnGoing[] = $theRents;
-            echo "Sewa berjalan (" . count($tempForOnGoing) . "): " . PHP_EOL;
+            $tempForOnGoing[] = $loanData[$i];
+            // echo "Sewa berjalan (" . count($tempForOnGoing) . "): " . PHP_EOL;
+
         }
-        echo $i + 1 . ". " .  $theBooks["title"] . " (" . $theBookAuthor["name"] . ", " . $theBooks["year"] .
-            ") -> " . $theRents["name"] . " (NIK: " . $theRents["nik"] . "), " .
-            date('j F Y', $theRents["shouldReturnedOn"]) . PHP_EOL;
     }
+    echo "Melewati batas sewa (" . count($tempForLate) . "): " . PHP_EOL;
+    for ($k = 0; $k < count($tempForLate); $k++) {
+        showItem($tempForLate, $loanData[$i][1], $theBookAuthor[$i][2], $k);
+    }
+    echo "Sewa berjalan (" . count($tempForOnGoing) . "): " . PHP_EOL;
+    for ($j = 0; $j < count($tempForOnGoing); $j++) {
+
+        showItem($tempForOnGoing, $theBooks, $theBookAuthor, $j);
+    }
+}
+
+function showItem(array $array, array $theBooks, array $theBookAuthor, $i)
+{
+    echo $i + 1 . ". " .  $theBooks["title"] . " (" . $theBookAuthor["name"] . ", " . $theBooks["year"] .
+        ") -> " . $array[$i]["name"] . " (NIK: " . $array[$i]["nik"] . "), " .
+        date('j F Y', $array[$i]["shouldReturnedOn"]) . PHP_EOL;
 }
