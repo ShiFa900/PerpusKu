@@ -5,7 +5,7 @@ require_once __DIR__ . "/../../Utils.php";
 function showLoanList(array $rents, array $books, array $authors)
 {
     while (true) {
-        if (isEmpty($rents) == 0) {
+        if ($rents[0]["isReturned"] == true) {
             echo "Maaf, belum ada data penyimpanan :(";
             break;
         } else {
@@ -23,7 +23,7 @@ function showLoanList(array $rents, array $books, array $authors)
                 $theBooks = $loanData[$i][1];
                 $theBookAuthor = $loanData[$i][2];
 
-                echoLoanList($theRents, $theBooks, $theBookAuthor, $i);
+                echoLoanList($theRents, $theBooks, $theBookAuthor, $rents);
             }
         }
         return $rents;
@@ -67,13 +67,13 @@ function sortLoanData(array &$loanData)
     return $loanData;
 }
 
-function echoLoanList(array $theRents, array $theBooks, array $theBookAuthor, $index)
+function echoLoanList(array $theRents, array $theBooks, array $theBookAuthor, array $loanData)
 {
     $tempForLate = [];
     $tempForOnGoing = [];
     $lateness = getLateInDays($theRents["rentedOn"], $theRents["shouldReturnedOn"]);
 
-    for ($i = 0; $i < count($theRents); $i++) {
+    for ($i = 0; $i < count($loanData); $i++) {
         if ($lateness > 0) {
             $tempForLate[] = $theRents;
             echo "Melewati waktu sewa (" . count($tempForLate) . "): " . PHP_EOL;
@@ -81,7 +81,7 @@ function echoLoanList(array $theRents, array $theBooks, array $theBookAuthor, $i
             $tempForOnGoing[] = $theRents;
             echo "Sewa berjalan (" . count($tempForOnGoing) . "): " . PHP_EOL;
         }
-        echo $index + 1 . ". " .  $theBooks["title"] . " (" . $theBookAuthor["name"] . ", " . $theBooks["year"] .
+        echo $i + 1 . ". " .  $theBooks["title"] . " (" . $theBookAuthor["name"] . ", " . $theBooks["year"] .
             ") -> " . $theRents["name"] . " (NIK: " . $theRents["nik"] . "), " .
             date('j F Y', $theRents["shouldReturnedOn"]) . PHP_EOL;
     }

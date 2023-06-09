@@ -390,7 +390,7 @@ function showGenre(array $genres, int $index)
     if (count($genres) == 0) {
         echo "-" . PHP_EOL;
     } else {
-        // tampilkan jumlah suatu genre yang terkandung dalam semua buku
+        // tampilkan jumlah genre yang terkandung dalam buku yang terpublikasi 
         echo "\n $index" + 1 . ". " . $genres["genre"] . " (" . count($totalGenreBooks) . ")" . PHP_EOL;
     }
 }

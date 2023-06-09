@@ -16,9 +16,9 @@ function bookReturn(array $rents, array $books, array $author, array $genre)
         $result = searchBookToBeReturned($rents, $books, $author, $genre);
 
         if ($result != null) {
-            echo "======" . PHP_EOL;
 
             echo "Transaksi sewa: " . PHP_EOL;
+            echo "======" . PHP_EOL;
             // TODO: tampilkan
             for ($i = 0; $i < count($result); $i++) {
                 $theRent = $result[$i][0];
@@ -100,7 +100,7 @@ function showTransaction(array $rents, array $books, array $author, array $genre
     $lateInDays = getLateInDays($rents["rentedOn"], $rents["shouldReturnedOn"]);
 
     // show...
-    echo "\n" . $index + 1 . ". " . $rents["name"] . " (NIK: " . $rents["nik"] . ") pada " .
+    echo $index + 1 . ". " . $rents["name"] . " (NIK: " . $rents["nik"] . ") pada " .
         date('j F Y', $rents["rentedOn"]) . " -> " . date('j F Y', $rents["shouldReturnedOn"]);
 
     if ($lateInDays > 0) {
@@ -109,5 +109,5 @@ function showTransaction(array $rents, array $books, array $author, array $genre
 
     echo "\n" . $books["title"] . ", oleh " . $author["name"] . " - " .
         $books["year"] . " (" . $genre["genre"] . ")" . PHP_EOL;
-    echo "\n======\n";
+    echo "======" . PHP_EOL;
 }
