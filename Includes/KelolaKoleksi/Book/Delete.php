@@ -3,6 +3,11 @@
 require_once __DIR__ . "/../../../Utils.php";
 require_once __DIR__ . "/../../../NewBookUtils.php";
 
+/**
+ * @param array books, @param array author, @param array genre, dan @param aray rent
+ * @return array books dengan data baru (karena telah dilakukan penghapusan)
+ * function menghapus data buku yang ada di global rent
+ */
 function deleteBook(array $books, array $author, array $genre, array $rent)
 {
     while (true) {
@@ -35,12 +40,15 @@ function deleteBook(array $books, array $author, array $genre, array $rent)
                             // mendapatkan judul buku yang akan di hapus
                             $bookTitle = $books[$i]["title"];
                             echoBook($books[$i], $genre, $author);
-
+                            // meminta konfirmasi penghapusan
                             if (confirm("Hapus data buku ini (y/n)? ") == true) {
+                                // hapus data buku yang ke $i
                                 unset($books[$i]);
                                 echo "Buku dengan judul " . '"' . ucwords($bookTitle) . '"' . " sudah dihapus" . PHP_EOL;
+                                // atur ulang array buku, agar indexnya berurutan lagi
                                 $books = array_values($books);
                             } else {
+                                // tampilkan pesan ini, jika function confirm == false (pilihan "n")
                                 echo "Penghapusan dibatalkan" . PHP_EOL;
                             }
                             break;

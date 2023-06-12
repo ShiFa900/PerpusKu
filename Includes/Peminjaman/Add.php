@@ -5,6 +5,7 @@ require_once __DIR__ . "/../../RentalUtils.php";
 
 /**
  * @param array rent, @param array books, @param array author, @param array genre
+ * @return array rent yang datanya telah ditambah
  * function menerima data penyewaan buku baru
  */
 function addRent(array $rent, array $books, array $authors, array $genres)
@@ -23,6 +24,7 @@ function addRent(array $rent, array $books, array $authors, array $genres)
                 echo "======" . PHP_EOL;
                 // meminta nomor urut buku yang akan disewakan
                 $target = getIndex($search, "Pilih buku yang akan disewa: ");
+                // mendapatkan 'id' buku yang akan di sewakan
                 $id = $search[$target - 1]["id"];
                 echo "======" . PHP_EOL;
                 echo "TAMBAH PEMINJAMAN" . PHP_EOL;

@@ -3,6 +3,8 @@
 require_once __DIR__ . "/../../../Utils.php";
 
 /**
+ * @param array global author (database)
+ * @return array author 
  * function untuk menambahkan nama penulis
  */
 function addAuthor(array $authors): array

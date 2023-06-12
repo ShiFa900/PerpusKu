@@ -5,6 +5,8 @@ require_once __DIR__ . "/../../../NewBookUtils.php";
 
 /**
  * @param array books, @param array genre, dan @param array author
+ * @return array books yang telah ditambah dengan data baru
+ * funtion menambahkan data untuk koleksi buku
  */
 function addBook(array $books, array $genres, array $authors)
 {

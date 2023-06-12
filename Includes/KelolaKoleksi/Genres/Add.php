@@ -4,6 +4,7 @@ require_once __DIR__ . "/../../../Utils.php";
 
 /**
  * @param array genre
+ * @return array global genre yang telah di tambahkan data baru
  */
 function addGenre(array $genres): array
 {

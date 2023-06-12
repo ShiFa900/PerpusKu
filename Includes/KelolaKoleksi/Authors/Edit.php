@@ -3,8 +3,9 @@
 require_once __DIR__ . "/../../../Utils.php";
 
 /**
- * @param array author
+ * @param array global author
  * function untuk mengedit data author
+ * @return array author setelah di edit
  */
 function editAuthor(array $author)
 {

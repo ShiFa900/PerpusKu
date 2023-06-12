@@ -5,6 +5,7 @@ require_once __DIR__ . "/../../../Utils.php";
 /**
  * @param array author @param array books
  * function menghapus data author
+ * @return array author dengan baru, setelah penghapusan dilakukan
  */
 function deleteAuthor(array $author, array $books)
 {
@@ -36,9 +37,10 @@ function deleteAuthor(array $author, array $books)
 
                             // hapus data penulis dari database
                             if (confirm("Hapus penulis " . '"' . ucwords($nama) . '"' . " (y/n)? ") == true) {
+                                // hapus data penulis ke $i
                                 unset($author[$i]);
                                 echo "Penulis " . '"' . ucwords($nama) . '"' . " telah dihapus" . PHP_EOL;
-                                // set kembali no index dari array
+                                // set kembali no index dari array agar berurutan lagi
                                 $author = array_values($author);
                             } else {
                                 echo "Penghapusan dibatalkan" . PHP_EOL;
