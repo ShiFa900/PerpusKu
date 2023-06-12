@@ -85,3 +85,20 @@ function askForRentalDuration()
         }
     }
 }
+
+function saveRentsintoJson($rents)
+{
+    $json = json_encode($rents, JSON_PRETTY_PRINT);
+    file_put_contents("Rents.json", $json);
+}
+
+function loadRent()
+{
+    if (file_exists("Rents.json")) {
+        $json = file_get_contents("Rents.json");
+        $rent = json_decode($json, true);
+        return $rent;
+    } else {
+        return [];
+    }
+}

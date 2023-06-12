@@ -18,6 +18,6 @@ function addBook(array $books, array $genres, array $authors)
             echo "======" . PHP_EOL;
         }
     }
-
+    saveBookintoJson($books);
     return $books;
 }

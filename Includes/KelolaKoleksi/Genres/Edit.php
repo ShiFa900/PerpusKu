@@ -10,21 +10,25 @@ function editGenre(array $genres)
             break;
         } else {
             $search = searchGenres($genres);
-            echo "======" . PHP_EOL;
-            $indexOfGenre = getIndex($search, "Pilih genre: ");
-            echo "Edit nama genre: ";
-            $genreName = getStringInput();
+            if ($search != null) {
+                echo "======" . PHP_EOL;
+                $indexOfGenre = getIndex($search, "Pilih genre: ");
+                echo "Edit nama genre: ";
+                $genreName = getStringInput();
 
-            $id = $search[$indexOfGenre - 1]["id"];
-            for ($i = 0; $i < count($genres); $i++) {
-                if ($id == $genres[$i]["id"]) {
-                    $genres[$i]["genre"] = $genreName;
-                    break;
+                $id = $search[$indexOfGenre - 1]["id"];
+                for ($i = 0; $i < count($genres); $i++) {
+                    if ($id == $genres[$i]["id"]) {
+                        $genres[$i]["genre"] = $genreName;
+                        break;
+                    }
                 }
+                echo "Genre " . '"' . ucwords($genreName) . '"' . " telah di perbarui" . PHP_EOL;
             }
         }
-        echo "Genre " . '"' . ucwords($genreName) . '"' . " telah di perbarui" . PHP_EOL;
+
         break;
     }
+    saveGenreintoJson($genres);
     return $genres;
 }

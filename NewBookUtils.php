@@ -82,3 +82,54 @@ function askForPublicationYear()
         }
     }
 }
+
+function saveAuthorintoJson($authors)
+{
+    $json = json_encode($authors, JSON_PRETTY_PRINT);
+    file_put_contents("Authors.json", $json);
+}
+
+function saveGenreintoJson($genres)
+{
+    $json = json_encode($genres, JSON_PRETTY_PRINT);
+    file_put_contents("Genres.json", $json);
+}
+
+function saveBookintoJson($books)
+{
+    $json = json_encode($books, JSON_PRETTY_PRINT);
+    file_put_contents("Books.json", $json);
+}
+
+function loadAuthor()
+{
+    if (file_exists("Author.json")) {
+        $json = file_get_contents("Author.json");
+        $author = json_decode($json, true);
+        return $author;
+    } else {
+        return [];
+    }
+}
+
+function loadBook()
+{
+    if (file_exists("Books.json")) {
+        $json = file_get_contents("Books.json");
+        $book = json_decode($json, true);
+        return $book;
+    } else {
+        return [];
+    }
+}
+
+function loadGenre()
+{
+    if (file_exists("Genres.json")) {
+        $json = file_get_contents("Genres.json");
+        $genre = json_decode($json, true);
+        return $genre;
+    } else {
+        return [];
+    }
+}

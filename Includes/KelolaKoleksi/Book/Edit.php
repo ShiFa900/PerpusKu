@@ -12,7 +12,7 @@ function editBook(array $book, array $author, array $genre)
         } else {
             $search = searchBook($book, $author, $genre, "======");
             if ($search == null) {
-                break;
+                return null;
             } else {
                 echo "======" . PHP_EOL;
                 $indexOfBook = getIndex($search, "Pilih buku yang akan diperbarui: ") . PHP_EOL;
@@ -26,9 +26,12 @@ function editBook(array $book, array $author, array $genre)
                     }
                 }
             }
-            echoBook($newBook, $genre, $author);
-            echo "Buku dengan judul " . '"' . ucwords($newBook["title"]) . '"' . " telah diperbarui" . PHP_EOL;
+            if ($newBook != null) {
+                echoBook($newBook, $genre, $author);
+                echo "Buku dengan judul " . '"' . ucwords($newBook["title"]) . '"' . " telah diperbarui" . PHP_EOL;
+            }
         }
+        saveBookintoJson($book);
         return $book;
     }
 }

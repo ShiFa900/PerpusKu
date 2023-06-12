@@ -45,6 +45,7 @@ function addRent(array $rent, array $books, array $authors, array $genres)
                 }
             }
         }
+        saveRentsintoJson($rent);
         return $rent;
     }
 }

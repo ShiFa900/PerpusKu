@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__ . "/../../../Utils.php";
+
 function addGenre(array $genres): array
 {
     while (true) {
@@ -14,5 +16,6 @@ function addGenre(array $genres): array
             break;
         }
     }
+    saveGenreintoJson($genres);
     return $genres;
 }

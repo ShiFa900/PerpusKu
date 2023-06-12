@@ -1,6 +1,5 @@
 <?php
 
-
 require_once __DIR__ . "/../../../Utils.php";
 
 /**
@@ -20,5 +19,6 @@ function addAuthor(array $authors): array
             break;
         }
     }
+    saveAuthorintoJson($authors);
     return $authors;
 }

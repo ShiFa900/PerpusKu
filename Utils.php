@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  *function mengecek apakah inputan dari user bertipe int 
  */
@@ -159,7 +160,7 @@ function getFirstDataFromArray(array $input, int $id, string $keyName): array
             return $input[$i];
         }
     }
-    return null;
+    return [];
 }
 
 
@@ -168,7 +169,7 @@ function askForAuthor(array $authors, string $name)
     $id = generatedId($authors);
 
     return [
-        "name" => $name,
+        "name" => ucwords($name),
         "id" => $id,
     ];
 }
@@ -178,7 +179,7 @@ function askForGenre(array $genres, string $genre)
     $id = generatedId($genres);
 
     return [
-        "genre" => $genre,
+        "genre" => ucwords($genre),
         "id" => $id,
     ];
 }
@@ -365,7 +366,7 @@ function searchBook(array $books, array $author, array $genre, string $input)
 
             if (count($temp) == 0) {
                 echo "Maaf, tidak ada buku dengan menggunakan kata kunci tsb." . PHP_EOL;
-                return null;
+                break;
             } else {
                 echo "Hasil pencarian: " . PHP_EOL;
                 echo "$input\n";
@@ -398,7 +399,7 @@ function searchGenres(array $genres)
             }
             if (count($temp) == 0) {
                 echo "Maaf, tidak ada genre dengan menggunakan kata kunci tsb." . PHP_EOL;
-                return null;
+                break;
             } else {
                 echo "Hasil pencarian: " . PHP_EOL;
                 echo "======" . PHP_EOL;
@@ -433,7 +434,7 @@ function searchAuthors(array $authors)
 
             if (count($temp) == 0) {
                 echo "Maaf, tidak ada penulis dengan menggunakan kata kunci tsb." . PHP_EOL;
-                return null;
+                break;
             } else {
                 echo "Hasil pencarian: " . PHP_EOL;
                 echo "======" . PHP_EOL;

@@ -10,25 +10,27 @@ function editAuthor(array $author)
             break;
         } else {
             $search = searchAuthors($author);
-            echo "======" . PHP_EOL;
-            $indexOfAuthor = getIndex($search, "Pilih penulis: ");
-            echo "Edit nama penulis: ";
-            $nama = getStringInput();
+            if ($search != null) {
+                echo "======" . PHP_EOL;
+                $indexOfAuthor = getIndex($search, "Pilih penulis: ");
+                echo "Edit nama penulis: ";
+                $nama = getStringInput();
 
-            // $arrayOfAuthorName = getAuthorsName($author, $nama);
-            $id = $search[$indexOfAuthor - 1]["id"];
+                // $arrayOfAuthorName = getAuthorsName($author, $nama);
+                $id = $search[$indexOfAuthor - 1]["id"];
 
-            for ($i = 0; $i < count($author); $i++) {
-                if ($id == $author[$i]["id"]) {
+                for ($i = 0; $i < count($author); $i++) {
+                    if ($id == $author[$i]["id"]) {
 
-                    $author[$i]["name"] = $nama;
-                    break;
+                        $author[$i]["name"] = ucwords($nama);
+                        break;
+                    }
                 }
+                echo "Penulis " . '"' . ucwords($nama) . '"' . " telah di perbarui" . PHP_EOL;
             }
         }
-        echo "Penulis " . '"' . ucwords($nama) . '"' . " telah di perbarui" . PHP_EOL;
         break;
     }
-
+    saveAuthorintoJson($author);
     return $author;
 }

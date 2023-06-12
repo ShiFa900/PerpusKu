@@ -3,57 +3,58 @@
 use JetBrains\PhpStorm\Internal\ReturnTypeContract;
 
 require_once __DIR__ . "/../../Utils.php";
+require_once __DIR__ . "/../../RentalUtils.php";
 
 
 function bookReturn(array $rents, array $books, array $author, array $genre)
 {
-    // while (true) {
-    $i = 0;
-    if ($rents[$i]["isReturned"] != false) {
-        return null;
-    } else {
-        echo "PENGEMBALIAN" . PHP_EOL;
-        echo "======" . PHP_EOL;
-
-        // lakukan pencarian untuk judul buku yang akan di tutup proses transaksinya
-        // watchout, $result isinya adalah array of 4 data
-        $result = searchBookToBeReturned($rents, $books, $author, $genre);
-
-        if ($result != null) {
-
-            echo "Transaksi sewa: " . PHP_EOL;
+    foreach ($rents as $key) {
+        while ($key["isReturned"] != true) {
+            echo "PENGEMBALIAN" . PHP_EOL;
             echo "======" . PHP_EOL;
-            // TODO: tampilkan
-            for ($i = 0; $i < count($result); $i++) {
-                $theRent = $result[$i][0];
-                $theBook = $result[$i][1];
-                $theBookAuthor = $result[$i][2];
-                $theBookGenre = $result[$i][3];
 
-                showTransaction($theRent, $theBook, $theBookAuthor, $theBookGenre, $i);
-            }
+            // lakukan pencarian untuk judul buku yang akan di tutup proses transaksinya
+            // watchout, $result isinya adalah array of 4 data
+            $result = searchBookToBeReturned($rents, $books, $author, $genre);
 
-            $target = getIndex($result, "Pilih transaksi sewa buku yang akan ditutup: ");
+            if ($result != null) {
 
-            if (confirm("Lanjutkan proses pengembalian (y/n)? ") == false) {
-                echo "Penutupan sewa buku dibatalkan";
-            } else {
-                $theRentData = $result[$target - 1][0];
-                for ($i = 0; $i < count($rents); $i++) {
-                    if ($theRentData["id"] == $rents[$i]["id"]) {
-                        // penutupan transaksi ditandai dengan pengubahan value dari key isReturned dan isReturned
-                        $rents[$i]["isReturned"] = true;
-                        $rents[$i]["isReturned"] = time();
-                        echo "Data sewa buku telah ditutup!" . PHP_EOL;
-                        echo "======" . PHP_EOL;
-                        break;
+                echo "Transaksi sewa: " . PHP_EOL;
+                echo "======" . PHP_EOL;
+                // TODO: tampilkan
+                for ($i = 0; $i < count($result); $i++) {
+                    $theRent = $result[$i][0];
+                    $theBook = $result[$i][1];
+                    $theBookAuthor = $result[$i][2];
+                    $theBookGenre = $result[$i][3];
+
+                    showTransaction($theRent, $theBook, $theBookAuthor, $theBookGenre, $i);
+                }
+
+                $target = getIndex($result, "Pilih transaksi sewa buku yang akan ditutup: ");
+
+                if (confirm("Lanjutkan proses pengembalian (y/n)? ") == false) {
+                    echo "Penutupan sewa buku dibatalkan";
+                } else {
+                    $theRentData = $result[$target - 1][0];
+                    for ($i = 0; $i < count($rents); $i++) {
+                        if ($theRentData["id"] == $rents[$i]["id"]) {
+                            // penutupan transaksi ditandai dengan pengubahan value dari key isReturned dan isReturned
+                            $rents[$i]["isReturned"] = true;
+                            $rents[$i]["returnedOn"] = time();
+                            echo "Data sewa buku telah ditutup!" . PHP_EOL;
+                            echo "======" . PHP_EOL;
+                            break;
+                        }
                     }
                 }
             }
+            return $rents;
         }
-        $i++;
-        return $rents;
     }
+    saveRentsintoJson($rents);
+    echo "Tidak ada buku yang dipinjam" . PHP_EOL;
+    return $rents;
 }
 
 function searchBookToBeReturned(array $rents, array $books, $authors, $genres)

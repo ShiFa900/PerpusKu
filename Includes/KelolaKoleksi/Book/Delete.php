@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__ . "/../../../Utils.php";
+require_once __DIR__ . "/../../../NewBookUtils.php";
 
 function deleteBook(array $books, array $author, array $genre, array $rent)
 {
@@ -45,5 +46,6 @@ function deleteBook(array $books, array $author, array $genre, array $rent)
         }
         break;
     }
+    saveBookintoJson($books);
     return $books;
 }

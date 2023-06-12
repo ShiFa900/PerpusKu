@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__ . "/../../Utils.php";
+require_once __DIR__ . "/../../RentalUtils.php";
 
 function showLoanList(array $rents, array $books, array $authors)
 {
@@ -41,6 +42,7 @@ function showLoanList(array $rents, array $books, array $authors)
                 showItem($ongoingRents[$i][0], $ongoingRents[$i][1], $ongoingRents[$i][2], $i);
             }
         }
+        saveRentsintoJson($rents);
         return $rents;
     }
 }
@@ -89,34 +91,6 @@ function sortLoanData(array &$loanData)
         $loanData[$j + 1] = $key;
     }
 }
-
-// function echoLoanList(array $loanData)
-// {
-//     $tempForLate = [];
-//     $tempForOnGoing = [];
-
-//     $lateness = getLateInDays($theRents["isReturned"], $theRents["shouldReturnedOn"]);
-
-//     for ($i = 0; $i < count($rents); $i++) {
-
-//         if ($lateness > 0) {
-//             $tempForLate[] = $loanData[$i];
-//         } else {
-//             $tempForOnGoing[] = $loanData[$i];
-//             // echo "Sewa berjalan (" . count($tempForOnGoing) . "): " . PHP_EOL;
-
-//         }
-//     }
-//     echo "Melewati batas sewa (" . count($tempForLate) . "): " . PHP_EOL;
-//     for ($k = 0; $k < count($tempForLate); $k++) {
-//         showItem($tempForLate, $loanData[$i][1], $theBookAuthor[$i][2], $k);
-//     }
-//     echo "Sewa berjalan (" . count($tempForOnGoing) . "): " . PHP_EOL;
-//     for ($j = 0; $j < count($tempForOnGoing); $j++) {
-
-//         showItem($tempForOnGoing, $theBooks, $theBookAuthor, $j);
-//     }
-// }
 
 function showItem(array $rentItem, array $rentedBook, array $rentedBookAuthor, $i)
 {

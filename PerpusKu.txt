@@ -4,3 +4,7 @@ PerpusKu
 2. buat function pencarian baru untuk penulis, sama dengan function pencarian pada menu "Cari"
 tapi tidak dengan inputan yang sama
 3. penambahan data baru (penulis) kemudian melakukan pencarian
+
+VALIDASI
+1. Bagian return, ketika semua buku dengan key 'isReturned' == true
+maka tampilkan pesan "Tidak ada buku yang dipinjam"
