@@ -552,3 +552,12 @@ function searchAuthors(array $authors)
         return $temp;
     }
 }
+
+function clearScreen()
+{
+    if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+        popen('cls', 'w');
+    } else {
+        system('clear');
+    }
+}

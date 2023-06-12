@@ -92,3 +92,4 @@ $genres = loadGenre();
 $books = loadBook();
 $rents = loadRent();
 mainMenu();
+system('clear');

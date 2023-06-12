@@ -21,6 +21,7 @@ require_once __DIR__ . "/Includes/Peminjaman/LoanList.php";
  */
 function showMainMenu()
 {
+    clearScreen();
     echo PHP_EOL . "PERPUSKU" . PHP_EOL;
     echo "1. Kelola koleksi" . PHP_EOL;
     echo "2. Peminjaman" . PHP_EOL;
@@ -36,6 +37,7 @@ function showMainMenu()
 
 function showCollectionMenu(array $books, array $authors, array $genres)
 {
+    clearScreen();
     echo PHP_EOL . "KELOLA KOLEKSI" . PHP_EOL;
     //pada menu ini, tampilkan juga jumlah data yang ada di database
     echo "1. Buku" . " (" . count($books) . ")" . PHP_EOL; // tampilkan jumlah buku
@@ -53,6 +55,7 @@ function showCollectionMenu(array $books, array $authors, array $genres)
 
 function showBookCollectionMenu()
 {
+    clearScreen();
     echo PHP_EOL . "KELOLA KOLEKSI BUKU" . PHP_EOL;
     echo "1. Cari" . PHP_EOL;
     echo "2. Tambah" . PHP_EOL;
@@ -70,6 +73,7 @@ function showBookCollectionMenu()
 
 function showAuthorsCollectionMenu()
 {
+    // clearScreen();
     echo PHP_EOL . "KELOLA KOLEKSI PENULIS" . PHP_EOL;
     echo "1. Cari" . PHP_EOL;
     echo "2. Tambah" . PHP_EOL;
@@ -87,6 +91,7 @@ function showAuthorsCollectionMenu()
 
 function showGenresCollectionMenu()
 {
+    // clearScreen();
     echo PHP_EOL . "KELOLA KOLEKSI GENRE" . PHP_EOL;
     echo "1. Cari" . PHP_EOL;
     echo "2. Tambah" . PHP_EOL;
@@ -104,6 +109,7 @@ function showGenresCollectionMenu()
 
 function showbookBorrowingMenu()
 {
+    // clearScreen();
     echo PHP_EOL . "PEMINJAMAN" . PHP_EOL;
     echo "1. Daftar peminjaman" . PHP_EOL;
     echo "2. Tambah" . PHP_EOL;
@@ -144,6 +150,7 @@ function mainCollectionMenu()
     global $genres;
     $exit = false;
 
+    clearScreen();
     while ($exit == false) {
         $menu = showCollectionMenu($books, $authors, $genres);
         if ($menu == 1) {
@@ -167,6 +174,7 @@ function mainBookCollectionMenu()
     global $authors;
     global $rents;
     $exit = false;
+
 
     while ($exit == false) {
         $menu = showBookCollectionMenu();

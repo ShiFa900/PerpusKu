@@ -39,15 +39,20 @@ function showLoanList(array $rents, array $books, array $authors)
                 }
             }
 
-            // show late and ongoing rents
-            echo "Melewati batas sewa (" . count($lateRents) . "): " . PHP_EOL;
-            for ($i = 0; $i < count($lateRents); $i++) {
-                showItem($lateRents[$i][0], $lateRents[$i][1], $lateRents[$i][2], $i);
+            if (count($lateRents) != 0) {
+                // menampilkan data yang melewati batas penyewaan
+                echo "Melewati batas sewa (" . count($lateRents) . "): " . PHP_EOL;
+                for ($i = 0; $i < count($lateRents); $i++) {
+                    showItem($lateRents[$i][0], $lateRents[$i][1], $lateRents[$i][2], $i);
+                }
             }
 
-            echo "Sewa berjalan (" . count($ongoingRents) . "): " . PHP_EOL;
-            for ($i = 0; $i < count($ongoingRents); $i++) {
-                showItem($ongoingRents[$i][0], $ongoingRents[$i][1], $ongoingRents[$i][2], $i);
+            if (count($ongoingRents) != 0) {
+                // menampilkan data penyewaan yang masih berjalan
+                echo "Sewa berjalan (" . count($ongoingRents) . "): " . PHP_EOL;
+                for ($i = 0; $i < count($ongoingRents); $i++) {
+                    showItem($ongoingRents[$i][0], $ongoingRents[$i][1], $ongoingRents[$i][2], $i);
+                }
             }
         }
         saveRentsintoJson($rents);
@@ -106,6 +111,7 @@ function sortLoanData(array &$loanData)
 /**
  * function menampilkan data yang di olah-olah
  * untuk output yang diminta
+ * 
  */
 function showItem(array $rentItem, array $rentedBook, array $rentedBookAuthor, $i)
 {

@@ -39,7 +39,7 @@ function bookReturn(array $rents, array $books, array $author, array $genre)
                 $target = getIndex($result, "Pilih transaksi sewa buku yang akan ditutup: ");
 
                 if (confirm("Lanjutkan proses pengembalian (y/n)? ") == false) {
-                    echo "Penutupan sewa buku dibatalkan";
+                    echo "Penutupan sewa buku dibatalkan" . PHP_EOL;
                 } else {
                     $theRentData = $result[$target - 1][0];
                     for ($i = 0; $i < count($rents); $i++) {
@@ -71,6 +71,7 @@ function bookReturn(array $rents, array $books, array $author, array $genre)
 function searchBookToBeReturned(array $rents, array $books, $authors, $genres)
 {
     while (true) {
+        // jika database kosong, maka tampilkan pesan ini, dan pencarian dihentikan
         if (isEmpty($rents) == 0) {
             echo "Data peminjaman kosong :(";
             break;
