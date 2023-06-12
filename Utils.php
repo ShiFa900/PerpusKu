@@ -40,7 +40,17 @@ function isAlpha(): string
     return "";
 }
 
-
+function isAlphaNumberic()
+{
+    $input = trim(fgets(STDIN));
+    if (ctype_alnum($input)) {
+        return $input;
+    }
+    return "";
+}
+/**
+ * function untuk mendapatkan buku yang ditulis oleh author dengan 'id'
+ */
 function getAuthorBooks(array $author, array $books)
 {
     $temp = [];
@@ -52,6 +62,9 @@ function getAuthorBooks(array $author, array $books)
     return $temp;
 }
 
+/**
+ * function untuk mendapatkan buku dengan genre 'id'
+ */
 function getGenreBooks(array $genre, array $books)
 {
     $temp = [];
@@ -63,16 +76,23 @@ function getGenreBooks(array $genre, array $books)
     return $temp;
 }
 
-function isNikOnRent(array $rent, string $nik): bool
+/**
+ * function untuk mengecek, apakah $nik ada dalam database rent, dan apakah nilai dari key['isReturned'] = false
+ * yang manya jika bernilai false, artinya buku itu belum dikembalikan
+ */
+function isReturnedTrue(array $rent, string $nik): bool
 {
-    for ($i = 0; $i < count($rent); $i++) {
-        if ($nik == $rent[$i]["nik"]) {
+    foreach ($rent as $key) {
+        if ($nik == $key["nik"] && $key["isReturned"] == false) {
             return true;
         }
     }
     return false;
 }
 
+/**
+ * function untuk meminta harga sewa
+ */
 function askForRentalPrice(string $input)
 {
     while (true) {
@@ -88,6 +108,9 @@ function askForRentalPrice(string $input)
     }
 }
 
+/**
+ * function untuk meminta nomor urut, setelah data ditampilkan
+ */
 function askForOrdinalNumber(string $input)
 {
     while (true) {
@@ -101,38 +124,57 @@ function askForOrdinalNumber(string $input)
     }
 }
 
+/**
+ * function untuk memberi 'id' pada data baru
+ */
 function generatedId(array $input)
 {
+    // jika data masih kosong, maka 'id' yang diberikan dimulai dari 1(opsional)
     if (count($input) == 0) {
         return 1;
     }
+    // otherwise, tambahkan sesuai dengan jumlah inputan dikurangu 1, kemudian 'id
+    // ditambah 1
     return $input[count($input) - 1]["id"] + 1;
 }
 
-
+/**
+ * function untuk mendapatkan nama dari author dengan menggunakan key['name']
+ */
 function getAuthorsWithName(array $authors, string $name): array
 {
     for ($i = 0; $i < count($authors); $i++) {
         if ($name == $authors[$i]["name"]) {
+            // return value berupa array author dengan nama dari var $name
             return $authors[$i];
         }
     }
     return [];
 }
 
+/**
+ * function mencari apakah nama author yang dimaksud ada di database
+ * return value boolean
+ */
 function isAuthorExists(array $authors, string $name): bool
 {
     for ($i = 0; $i < count($authors); $i++) {
+        // turunkan semua huruf untuk mencari kesamaan (sensitive case)
         if (strtolower($name) == strtolower($authors[$i]["name"])) {
+            // return true jika ditemukan, false otherwise
             return true;
         }
     }
     return false;
 }
 
+/**
+ * function mencari apakah genre yang dimaksud ada di database
+ */
 function isGenreExists(array $genres, string $input): bool
 {
     for ($i = 0; $i < count($genres); $i++) {
+        // sensitive case
         if (strtolower($input) == strtolower($genres[$i]["genre"])) {
             return true;
         }
@@ -140,9 +182,13 @@ function isGenreExists(array $genres, string $input): bool
     return false;
 }
 
+/**
+ * function mencari apakah buku dengan judul yang dimaksud ada di database
+ */
 function isBookExists(array $books, string $title)
 {
     for ($i = 0; $i < count($books); $i++) {
+        // ini sensitive case, makanya diturunkan dulu alias tidak kapital
         if (strtolower($title) == strtolower($books[$i]["title"])) {
             return $books[$i];
         }
@@ -163,10 +209,14 @@ function getFirstDataFromArray(array $input, int $id, string $keyName): array
     return [];
 }
 
-
+/**
+ * function untuk mengembalikan data author dalam bentuk array
+ */
 function askForAuthor(array $authors, string $name)
 {
     $id = generatedId($authors);
+    // penambahan 'id' jika data author sebelumnya sudah ada
+    // atau 'id' dimulai dari 1 jika data masih kosong
 
     return [
         "name" => ucwords($name),
@@ -174,15 +224,23 @@ function askForAuthor(array $authors, string $name)
     ];
 }
 
+/**
+ * function untuk mengembalikan data genre dalam bentuk array
+ */
 function askForGenre(array $genres, string $genre)
 {
     $id = generatedId($genres);
+    // penambahan 'id' jika data genre sebelumnya sudah ada
+    // atau 'id' dimulai dari 1 jika data masih kosong
 
     return [
         "genre" => ucwords($genre),
         "id" => $id,
     ];
 }
+/**
+ * konfirmasi lanjutan program selanjutnya
+ */
 function confirm(string $input): bool
 {
     while (true) {
@@ -198,22 +256,30 @@ function confirm(string $input): bool
     return $input;
 }
 
+/**
+ * function menampilkan data author
+ */
 function showAuthors(array $author, int $index)
 {
     global $books;
-    $totalAuthorBooks = getAuthorBooks($author, $books);
+    // mencari buku yang ditulis oleh author $author
+    $totalAuthorBooks = getAuthorBooks($author, $books); // var ini berupa array
 
     if (count($author) == 0) {
         echo "-" . PHP_EOL;
     } else {
+        // tampilkan jumlah buku yang di publikasikan oleh author
         echo "\n $index" + 1 . ". " . $author["name"] . " (" . count($totalAuthorBooks) .  ")" . PHP_EOL;
     }
-    // }
 }
 
+/**
+ * function menampilkan data genre
+ */
 function showGenre(array $genres, int $index)
 {
     global $books;
+    // mencari buku yang mengandung genre $genres
     $totalGenreBooks = getGenreBooks($genres, $books);
     if (count($genres) == 0) {
         echo "-" . PHP_EOL;
@@ -223,6 +289,9 @@ function showGenre(array $genres, int $index)
     }
 }
 
+/**
+ * function untuk menampilkan data buku
+ */
 function showBook(array $books, array $author, array $genre)
 {
 
@@ -230,19 +299,20 @@ function showBook(array $books, array $author, array $genre)
         echo "-" . PHP_EOL;
     } else {
 
+        // mencari nama author dengan 'authorId' dari database rents
         for ($i = 0; $i < count($author); $i++) {
             if ($author[$i]["id"] == $books["authorId"]) {
                 $authorName = $author[$i]["name"];
             }
         }
-
+        // mencari nama genre dengan 'genreId' dari database rents
         for ($i = 0; $i < count($genre); $i++) {
             if ($genre[$i]["id"] == $books["genreId"]) {
                 $genreName = $genre[$i]["genre"];
             }
         }
 
-
+        // tampilkan
         $temp = ucwords($books["title"]) . ", oleh " . ucwords($authorName) .
             " - " . $books["year"] . " (" . $genreName . ")" . PHP_EOL;
 
@@ -250,14 +320,19 @@ function showBook(array $books, array $author, array $genre)
     }
 }
 
+/**
+ * function yang tugasnya hanya untuk menampilkan dan sedikit mengecek seperti di bawah ini
+ */
 function echoBook(array $showNewBook, array $genres, array $authors)
 {
+    // disini dia echo-echo dulu semua
     echo "======" . PHP_EOL;
     echo "Konfirmasi: " . PHP_EOL;
     echo "Judul buku: " .  ucwords($showNewBook["title"]) . PHP_EOL;
     echo "Tahun penerbitan: " . $showNewBook["year"] . PHP_EOL;
     echo "Harga sewa: " . $showNewBook["rentalFee"] . PHP_EOL;
     // show genre
+    // mencari genre yang dimaksud, cek apakah pada $showNewBook['genreId'] ada pada database genre['id']
     for ($i = 0; $i < count($genres); $i++) {
         if ($genres[$i]["id"] == $showNewBook["genreId"]) {
             // tampilkan
@@ -267,6 +342,7 @@ function echoBook(array $showNewBook, array $genres, array $authors)
         }
     }
     // show author
+    // mencari nama penulis yang dimaksud, cek apakah pada $showNewBook['authorId'] ada pada database author['id']
     for ($i = 0; $i < count($authors); $i++) {
         if ($authors[$i]["id"] == $showNewBook["authorId"]) {
             echo "Penulis: " .  ucwords($authors[$i]["name"]) . PHP_EOL;
@@ -277,11 +353,17 @@ function echoBook(array $showNewBook, array $genres, array $authors)
     echo "======" . PHP_EOL;
 }
 
+/**
+ * lanjutan dari function askForOrdinalNumber()
+ * function ini sekalian melakukan pengecekan
+ */
 function getIndex(array $input, string $sentence)
 {
     while (true) {
         $target = askForOrdinalNumber($sentence);
         if ($target > count($input) || $target <= 0) {
+            // jika nomor yang dipilh lebih besar dari banyaknya jumlah data dan kurang dari atau sama dengan 0
+            // tampilkan pesan ini
             echo "Pilihan tidak ditemukan" . PHP_EOL;
         } else {
             return $target;
@@ -289,6 +371,9 @@ function getIndex(array $input, string $sentence)
     }
 }
 
+/**
+ * function mendapatkan hari keterlambatan
+ */
 function getLateInDays(int $rentDate, int $shouldReturnedDate): int
 {
     // make sure $shouldReturnedDate > $rentDate
@@ -302,11 +387,14 @@ function getLateInDays(int $rentDate, int $shouldReturnedDate): int
     return -1;
 }
 
+/**
+ * function untuk meminta inputan nama author
+ */
 function askForAuthorName()
 {
     while (true) {
         echo "Nama penulis: ";
-        $authorName = (getStringInput());
+        $authorName = isAlphaNumberic();
         if ($authorName == "" || strlen($authorName) > 50) {
             echo "Masukkan nama penulis dengan benar" . PHP_EOL;
         } else {
@@ -315,18 +403,26 @@ function askForAuthorName()
     }
 }
 
+/**
+ * function mendapatkan nama genre
+ */
 function askForGenreName()
 {
     while (true) {
         echo "Nama genre: ";
         $genreName = isAlpha();
         if ($genreName == "" || strlen($genreName) > 30) {
-            echo "Masukkan nama genre dengan benar";
+            echo "Masukkan nama genre dengan benar" . PHP_EOL;
+        } else {
+            return $genreName;
         }
-        return $genreName;
     }
 }
 
+/**
+ * function yang sebenarnya agak kurang berguna, but boleh lah kalo ada
+ * function ini untuk bertugas untuk mengecek apakah dalam array bernilai 0
+ */
 function isEmpty(array $input)
 {
     if (count($input) == 0) {
@@ -353,6 +449,9 @@ function getBooksByTitle(array $books, string $title): array
     return $temp;
 }
 
+/**
+ * function pencarian untuk judul buku
+ */
 function searchBook(array $books, array $author, array $genre, string $input)
 {
     while (true) {
@@ -379,6 +478,9 @@ function searchBook(array $books, array $author, array $genre, string $input)
     }
 }
 
+/**
+ * function untuk pencarian nama genre
+ */
 function searchGenres(array $genres)
 {
     while (true) {
@@ -412,10 +514,13 @@ function searchGenres(array $genres)
     }
 }
 
+/**
+ * function untuk pencarian nama author
+ */
 function searchAuthors(array $authors)
 {
     while (true) {
-        // pencarian dilakukan dengan menggunkana nama dari author atau nama penanya(?)
+        // pencarian dilakukan dengan menggunkana nama dari author
         if (count($authors) == 0) {
             echo "Kamu belum menambahkan data author :( \n";
             break;

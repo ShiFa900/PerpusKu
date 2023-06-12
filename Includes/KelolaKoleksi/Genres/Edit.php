@@ -2,9 +2,13 @@
 
 require_once __DIR__ . "/../../../Utils.php";
 
+/**
+ * @param array genre
+ */
 function editGenre(array $genres)
 {
     while (true) {
+        // deskripsi sama dengan di menu penulis
         if (count($genres) == 0) {
             echo "Tidak bisa mengedit, karena kamu belum menambahkan data genre :(";
             break;

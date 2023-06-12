@@ -3,13 +3,18 @@
 require_once __DIR__ . "/../../../Utils.php";
 require_once __DIR__ . "/../../../NewBookUtils.php";
 
+/**
+ * @param array book, @param array author, @param array genre
+ */
 function editBook(array $book, array $author, array $genre)
 {
     while (true) {
+        // tidak bisa mengedit karena data buku masih kosong di database penyewaan
         if (isEmpty($book) == 0) {
             echo "Tidak bisa mengedit, karena kamu belum menambahkan data buku :(" . PHP_EOL;
             break;
         } else {
+            // melakukan pencarian buku
             $search = searchBook($book, $author, $genre, "======");
             if ($search == null) {
                 return null;

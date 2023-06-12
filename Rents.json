@@ -34,5 +34,53 @@
         "shouldReturnedOn": 1686974786,
         "isReturned": false,
         "returnedOn": null
+    },
+    {
+        "id": 4,
+        "bookId": 3,
+        "name": "Cubi",
+        "nik": "121",
+        "duration": 3,
+        "amount": "Rp 30,000",
+        "rentedOn": 1686548441,
+        "shouldReturnedOn": 1686807641,
+        "isReturned": false,
+        "returnedOn": null
+    },
+    {
+        "id": 5,
+        "bookId": 3,
+        "name": "Shifa Meilani",
+        "nik": "22",
+        "duration": 2,
+        "amount": "Rp 40,000",
+        "rentedOn": 1686548980,
+        "shouldReturnedOn": 1686721780,
+        "isReturned": true,
+        "returnedOn": 1686550103
+    },
+    {
+        "id": 6,
+        "bookId": 2,
+        "name": "Tata",
+        "nik": "222",
+        "duration": 6,
+        "amount": "Rp 120,000",
+        "rentedOn": 1686549406,
+        "shouldReturnedOn": 1687067806,
+        "isReturned": false,
+        "returnedOn": null
+    },
+    {
+        "id": 7,
+        "bookId": 1,
+        "name": "Nine",
+        "nik": "0009",
+        "duration": 10,
+        "amount": "Rp 10,000",
+        "rentedOn": 1686550065,
+        "shouldReturnedOn": 1687414065,
+        "isReturned": false,
+        "returnedOn": null
     }
 ]

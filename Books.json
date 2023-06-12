@@ -22,5 +22,21 @@
         "genreId": 2,
         "authorId": 1,
         "id": 3
+    },
+    {
+        "title": "kokom",
+        "year": 2012,
+        "rentalFee": "Rp 25,000",
+        "genreId": 3,
+        "authorId": 3,
+        "id": 4
+    },
+    {
+        "title": "bumi #1",
+        "year": 2015,
+        "rentalFee": "Rp 35,000",
+        "genreId": 1,
+        "authorId": 4,
+        "id": 5
     }
 ]

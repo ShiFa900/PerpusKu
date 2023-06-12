@@ -3,16 +3,22 @@
 require_once __DIR__ . "/../../Utils.php";
 require_once __DIR__ . "/../../RentalUtils.php";
 
+/**
+ * @param array rents, @param array books, @param array author
+ * function menampilkan data yang ada di database penyewaan (rents)
+ */
 function showLoanList(array $rents, array $books, array $authors)
 {
     while (true) {
         if (isEmpty($rents) == 0) {
+            // tampilkan pesan jika database penyewaan masih ksong
             echo "Maaf, tidak ada buku yang dipinjam :(" . PHP_EOL;
             break;
         } else {
             echo "DAFTAR PEMINJAMAN" . PHP_EOL;
             echo "======" . PHP_EOL;
 
+            // mendapatkan data penyewaan yang ada (return value berupa array 3 dimensi (mungkin))
             $loanData = getLoanData($rents, $books, $authors);
 
             // watchout: ini passing function params by reference
@@ -25,8 +31,10 @@ function showLoanList(array $rents, array $books, array $authors)
             foreach ($loanData as $loanItem) {
                 $lateness = getLateInDays($loanItem[0]["isReturned"], $loanItem[0]["shouldReturnedOn"]);
                 if ($lateness > 0) {
+                    // tambahkan data para var bertipe array, jika melebihi batas sewa
                     $lateRents[] = $loanItem;
                 } else {
+                    // tambahkan data pada var bertipe array, jika penyewaan masih berjalan
                     $ongoingRents[] = $loanItem;
                 }
             }
@@ -55,6 +63,8 @@ function showLoanList(array $rents, array $books, array $authors)
  */
 function getLoanData(array $rents, array $books, array $authors): array
 {
+    // mencari data-data penyewaan
+    // sekaligus mengecek, apakah data sewa masih berjalan atau melebihi batas sewa
     $temp = [];
     for ($i = 0; $i < count($rents); $i++) {
         for ($j = 0; $j < count($books); $j++) {
@@ -67,11 +77,12 @@ function getLoanData(array $rents, array $books, array $authors): array
             }
         }
     }
+    // return dalam array 3 dimensi
     return $temp;
 }
 
 /**
- * Sort array of loanData
+ * mengsorting data dari $loanData
  * @param $loanData array a pass by reference parameter of loanData
  */
 function sortLoanData(array &$loanData)
@@ -92,6 +103,10 @@ function sortLoanData(array &$loanData)
     }
 }
 
+/**
+ * function menampilkan data yang di olah-olah
+ * untuk output yang diminta
+ */
 function showItem(array $rentItem, array $rentedBook, array $rentedBookAuthor, $i)
 {
     echo $i + 1 . ". " .  $rentedBook["title"] . " (" . $rentedBookAuthor["name"] . ", " . $rentedBook["year"] .

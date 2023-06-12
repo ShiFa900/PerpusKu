@@ -5,10 +5,15 @@ use JetBrains\PhpStorm\Internal\ReturnTypeContract;
 require_once __DIR__ . "/../../Utils.php";
 require_once __DIR__ . "/../../RentalUtils.php";
 
-
+/**
+ * @param array rents, @param array books, @param array author, @param array genre
+ * function untuk penutupan sewa buku
+ */
 function bookReturn(array $rents, array $books, array $author, array $genre)
 {
     foreach ($rents as $key) {
+        // lakukan pengecekan disini, jika semua buku dalam databse sudah dikembalika alias 'true'
+        // maka tampilkan bahwa data penyewaan kosong, dibawah ini adalah kondisi sebaliknya
         while ($key["isReturned"] != true) {
             echo "PENGEMBALIAN" . PHP_EOL;
             echo "======" . PHP_EOL;
@@ -40,6 +45,7 @@ function bookReturn(array $rents, array $books, array $author, array $genre)
                     for ($i = 0; $i < count($rents); $i++) {
                         if ($theRentData["id"] == $rents[$i]["id"]) {
                             // penutupan transaksi ditandai dengan pengubahan value dari key isReturned dan isReturned
+                            // di bawah ini merupakan pengubahan value dari key yang tertera
                             $rents[$i]["isReturned"] = true;
                             $rents[$i]["returnedOn"] = time();
                             echo "Data sewa buku telah ditutup!" . PHP_EOL;
@@ -57,6 +63,11 @@ function bookReturn(array $rents, array $books, array $author, array $genre)
     return $rents;
 }
 
+/**
+ * function untuk mencari buku yang akan di kembalikan
+ * function pencarian ini berbeda dari function pencarian buku sebelumnya (return itemnya yang berbeda)
+ * makanya dibuatkan function sendiri
+ */
 function searchBookToBeReturned(array $rents, array $books, $authors, $genres)
 {
     while (true) {
@@ -74,10 +85,14 @@ function searchBookToBeReturned(array $rents, array $books, $authors, $genres)
             } else {
                 $temp = [];
 
+                // mencari dari data penyewaan, apakah dalam data $rent['bookId] sama dengan pencarian buku 'id'
+                // dan jika key['isReturned] tidak sama dengan true
                 for ($i = 0; $i < count($rents); $i++) {
                     for ($j = 0; $j < count($bookWithTitles); $j++) {
                         if ($rents[$i]["bookId"] == $bookWithTitles[$j]["id"] && $rents[$i]["isReturned"] == false) {
                             $temp[] = [
+                                // jika benar, maka disimpan dalam array 3 dimensi seperti ini
+
                                 // data rent:
                                 0 => $rents[$i],
                                 // data si buku:
@@ -97,6 +112,9 @@ function searchBookToBeReturned(array $rents, array $books, $authors, $genres)
     return null;
 }
 
+/**
+ * function untuk menampilkan data yang telah di olah-olah di atas
+ */
 function showTransaction(array $rents, array $books, array $author, array $genre, int $index)
 {
     // mencari selisih antara tanggal sekarang dengan tanggal dimana buku seharusnya dikembalikan
@@ -107,7 +125,9 @@ function showTransaction(array $rents, array $books, array $author, array $genre
     echo $index + 1 . ". " . $rents["name"] . " (NIK: " . $rents["nik"] . ") pada " .
         date('j F Y', $rents["rentedOn"]) . " -> " . date('j F Y', $rents["shouldReturnedOn"]);
 
+    // function mengecek keterlambatan pengembalian buku
     if ($lateInDays > 0) {
+        // tambahkan pesan ini jika buku telat dikembalikan
         echo " (telat $lateInDays hari)";
     }
 

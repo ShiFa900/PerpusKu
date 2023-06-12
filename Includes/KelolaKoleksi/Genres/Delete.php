@@ -5,6 +5,7 @@ require_once __DIR__ . "/../../../Utils.php";
 function deleteGenre(array $genre, array $books)
 {
     while (true) {
+        // hmm... ok, deskripsinya sama dengan di menu penulis
         if (isEmpty($genre) == 0) {
             echo "Tidak bisa menghapus, karena kamu belum menambahkan data genre :(";
             break;
