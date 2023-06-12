@@ -90,7 +90,6 @@ function searchBookToBeReturned(array $rents, array $books, $authors, $genres)
                         }
                     }
                 }
-
                 return $temp;
             }
         }

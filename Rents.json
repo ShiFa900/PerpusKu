@@ -1,0 +1,38 @@
+[
+    {
+        "id": 1,
+        "bookId": 1,
+        "name": "Shifa",
+        "nik": "123",
+        "duration": 2,
+        "amount": "Rp 40,000",
+        "rentedOn": 1686542710,
+        "shouldReturnedOn": 1686715510,
+        "isReturned": false,
+        "returnedOn": null
+    },
+    {
+        "id": 2,
+        "bookId": 3,
+        "name": "Cubi",
+        "nik": "121",
+        "duration": 3,
+        "amount": "Rp 45,000",
+        "rentedOn": 1686542740,
+        "shouldReturnedOn": 1686801940,
+        "isReturned": true,
+        "returnedOn": 1686542813
+    },
+    {
+        "id": 3,
+        "bookId": 2,
+        "name": "Kiki",
+        "nik": "908",
+        "duration": 5,
+        "amount": "Rp 60,000",
+        "rentedOn": 1686542786,
+        "shouldReturnedOn": 1686974786,
+        "isReturned": false,
+        "returnedOn": null
+    }
+]

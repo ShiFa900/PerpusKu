@@ -273,19 +273,10 @@ function mainBookBorrowingMenu()
             // daftar pengembalian buku
             // TODO: while (true) disini untuk mempermudah pengembalian buku berikutnya
             while (true) {
-                foreach ($rents as $key) {
-                    $rents = bookReturn($rents, $books, $authors, $genres);
-                    // if ($key["isReturned"] == true) {
-                    //     echo "Tidak ada buku yang dipinjam \n";
-                    //     echo "\n======\n";
-                    //     break;
-                    // } else {
-                    if (confirm("Ingin melakukan pengembalian buku lagi (y/n)? ") == false) {
-                        break;
-                    }
-                    // }
+                $rents = bookReturn($rents, $books, $authors, $genres);
+                if (confirm("Ingin melakukan pengembalian buku lagi (y/n)? ") == false) {
+                    break;
                 }
-                break;
             }
         } elseif ($menu == 0) {
             echo "Pilih nomor yang tersedia" . PHP_EOL;

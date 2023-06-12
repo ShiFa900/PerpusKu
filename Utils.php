@@ -357,11 +357,11 @@ function searchBook(array $books, array $author, array $genre, string $input)
 {
     while (true) {
         if (count($books) == 0) {
-            echo "Kamu belum menambahkan data buku :(";
+            echo "Kamu belum menambahkan data buku :( \n";
             break;
         } else {
             echo "Pencarian judul buku: ";
-            $title = getStringInput();
+            $title = preg_quote(getStringInput());
             $temp = getBooksByTitle($books, $title);
 
             if (count($temp) == 0) {
@@ -383,11 +383,11 @@ function searchGenres(array $genres)
 {
     while (true) {
         if (count($genres) == 0) {
-            echo "Kamu belum menambahkan data genre :(";
+            echo "Kamu belum menambahkan data genre :( \n";
             break;
         } else {
             echo "Pencarian nama genre: ";
-            $genreName = getStringInput();
+            $genreName = preg_quote(getStringInput());
             $temp = [];
 
             for ($i = 0; $i < count($genres); $i++) {
@@ -417,11 +417,11 @@ function searchAuthors(array $authors)
     while (true) {
         // pencarian dilakukan dengan menggunkana nama dari author atau nama penanya(?)
         if (count($authors) == 0) {
-            echo "Kamu belum menambahkan data author :(";
+            echo "Kamu belum menambahkan data author :( \n";
             break;
         } else {
             echo "Pencarian nama penulis: ";
-            $authorName = getStringInput();
+            $authorName = preg_quote(getStringInput());
             $temp = [];
 
             for ($i = 0; $i < count($authors); $i++) {

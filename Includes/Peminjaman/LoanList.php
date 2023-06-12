@@ -7,7 +7,7 @@ function showLoanList(array $rents, array $books, array $authors)
 {
     while (true) {
         if (isEmpty($rents) == 0) {
-            echo "Maaf, tidak ada buku yang dipinjam :(";
+            echo "Maaf, tidak ada buku yang dipinjam :(" . PHP_EOL;
             break;
         } else {
             echo "DAFTAR PEMINJAMAN" . PHP_EOL;

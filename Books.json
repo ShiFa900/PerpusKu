@@ -1,0 +1,26 @@
+[
+    {
+        "title": "hidup sekali #1",
+        "year": 2017,
+        "rentalFee": "Rp 20,000",
+        "genreId": 2,
+        "authorId": 1,
+        "id": 1
+    },
+    {
+        "title": "hilang dalam gelap #1",
+        "year": 2019,
+        "rentalFee": "Rp 35,000",
+        "genreId": 1,
+        "authorId": 2,
+        "id": 2
+    },
+    {
+        "title": "hidup sekali #2",
+        "year": 2017,
+        "rentalFee": "Rp 25,000",
+        "genreId": 2,
+        "authorId": 1,
+        "id": 3
+    }
+]

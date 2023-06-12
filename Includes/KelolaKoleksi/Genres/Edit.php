@@ -19,7 +19,7 @@ function editGenre(array $genres)
                 $id = $search[$indexOfGenre - 1]["id"];
                 for ($i = 0; $i < count($genres); $i++) {
                     if ($id == $genres[$i]["id"]) {
-                        $genres[$i]["genre"] = $genreName;
+                        $genres[$i]["genre"] = ucwords($genreName);
                         break;
                     }
                 }

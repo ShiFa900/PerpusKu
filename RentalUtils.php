@@ -19,7 +19,7 @@ function askForNewRent(array $rent, array $book)
         $duration = askForRentalDuration();
 
         // nominal standard diambil dari attribute "rentalFee" pada item ybs di $books
-        $defaultRentalFee = number_format($book["rentalFee"]);
+        $defaultRentalFee = ($book["rentalFee"]);
         $rent = askForRentalPrice("Biaya sewa (standarnya Rp $defaultRentalFee): ");
 
         // timestamp untuk kapan si buku dikembalikan

@@ -103,8 +103,8 @@ function saveBookintoJson($books)
 
 function loadAuthor()
 {
-    if (file_exists("Author.json")) {
-        $json = file_get_contents("Author.json");
+    if (file_exists("Authors.json")) {
+        $json = file_get_contents("Authors.json");
         $author = json_decode($json, true);
         return $author;
     } else {
